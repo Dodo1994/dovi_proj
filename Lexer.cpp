@@ -1,8 +1,4 @@
-//
-// Created by ori on 12/12/18.
-//
 
-#include <iostream>
 #include "Lexer.h"
 
 bool is_space(char c) {
