@@ -20,7 +20,7 @@ list <string> Lexer::string_to_list(string input) {
                 isFirstSpace = false;
                 // add word and init word
                 words.push_back(word);
-                word="";
+                word = "";
             }
             ++i;
         }
