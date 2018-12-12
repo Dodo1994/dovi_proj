@@ -1,6 +1,3 @@
-//
-// Created by ori on 12/12/18.
-//
 
 #ifndef ORI_LEXER_LEXER_H
 #define ORI_LEXER_LEXER_H
@@ -15,6 +12,8 @@ class Lexer {
 public:
     list<string> string_to_list(string input);
 
+private:
+    bool is_space(char c);
 };
 
 
