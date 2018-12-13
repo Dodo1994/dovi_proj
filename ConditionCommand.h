@@ -11,7 +11,6 @@ class ConditionCommand : public Command{
 
 public:
     virtual void execute() = 0;
-
 };
 
 
