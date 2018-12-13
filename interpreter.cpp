@@ -37,5 +37,5 @@ void interpreter::parser() {
 }
 
 bool interpreter::is_space(char c) {
-    return (c == ' ' || c == '\t'); //‫‪ c == '\n'
+    return (c == ' ' || c == '\t'); //‫‪ c == '\n' not space, to mark new line
 }
