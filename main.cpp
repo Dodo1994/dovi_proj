@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <list>
-#include "interpreter.h"
+#include "Interpreter.h"
 
 using namespace std;
 

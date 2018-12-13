@@ -14,7 +14,7 @@ public:
     void parser();
 
 private:
-    bool is_space(char c);
+    bool isSpace(char c);
 };
 
 

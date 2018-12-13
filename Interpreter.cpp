@@ -1,5 +1,5 @@
 
-#include "interpreter.h"
+#include "Interpreter.h"
 
 list <string> interpreter::lexer(string input) {
     int i = 0;
@@ -10,7 +10,7 @@ list <string> interpreter::lexer(string input) {
     // pass over input
     while (i < input.size()) {
         // pass over spaces
-        while (is_space(input[i]) && i < input.size()) {
+        while (isSpace(input[i]) && i < input.size()) {
             // if first space after word
             if(isFirstSpace) {
                 isFirstSpace = false;
@@ -34,8 +34,37 @@ list <string> interpreter::lexer(string input) {
 
 void interpreter::parser() {
 
+    /**
+     * from eli slides:
+     *
+     *  Command interface with function execute(string):int
+     *
+     *
+     *  MAP <string,Command> for commands
+     *
+     *  openDataServer = OpenServerCommand
+     *  connect = ConnectCommand
+     *  var = DefineVarCommand
+     *
+     * Command c = map.get(array[index]);
+     * if(c!=null)
+     *  index += c.execute(array[index]);
+     *
+     *
+     *  MAP <string,Double> for vars
+     *
+     *  brakes -> 0
+     *
+     *  throttle = 1
+     *  symTbl.put("throttle", 1.0)
+     *
+     *
+     * More Commands
+     *
+     */
+
 }
 
-bool interpreter::is_space(char c) {
+bool interpreter::isSpace(char c) {
     return (c == ' ' || c == '\t'); //‫‪ c == '\n' not space, to mark new line
 }
