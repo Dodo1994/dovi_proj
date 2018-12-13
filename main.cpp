@@ -1,15 +1,15 @@
 #include <iostream>
 #include <cstring>
 #include <list>
-#include "Lexer.h"
+#include "interpeter.h"
 
 using namespace std;
 
 // test for lexer
 int main() {
-    Lexer lexer;
+    interpeter interpeter1;
 
-    list<string> l = lexer.string_to_list("I am Ori. This is so cool\toop\noop");
+    list<string> l = interpeter1.lexer("I am Ori. This is so cool\n\toop\noop");
 
     for (auto &it : l)
         std::cout << it << endl;
