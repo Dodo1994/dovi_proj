@@ -1,13 +1,13 @@
 
-#ifndef INTERPETER_H
-#define INTERPETER_H
+#ifndef INTERPRETER_H
+#define INTERPRETER_H
 
 using namespace std;
 
 #include <string>
 #include <list>
 
-class interpeter {
+class interpreter {
 
 public:
     list<string> lexer(string input);

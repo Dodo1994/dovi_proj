@@ -1,13 +1,13 @@
 #include <iostream>
 #include <cstring>
 #include <list>
-#include "interpeter.h"
+#include "interpreter.h"
 
 using namespace std;
 
 // test for lexer
 int main() {
-    interpeter interpeter1;
+    interpreter interpreter1;
 
     list<string> l = interpeter1.lexer("I am Ori. This is so cool\n\toop\noop");
 

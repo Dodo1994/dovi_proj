@@ -1,7 +1,7 @@
 
-#include "interpeter.h"
+#include "interpreter.h"
 
-list <string> interpeter::lexer(string input) {
+list <string> interpreter::lexer(string input) {
     int i = 0;
     string word;
     bool isFirstSpace = true;
@@ -32,10 +32,10 @@ list <string> interpeter::lexer(string input) {
     return words;
 }
 
-void interpeter::parser() {
+void interpreter::parser() {
 
 }
 
-bool interpeter::is_space(char c) {
+bool interpreter::is_space(char c) {
     return (c == ' ' || c == '\t'); //‫‪ c == '\n'
 }
