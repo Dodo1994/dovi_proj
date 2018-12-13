@@ -9,7 +9,7 @@ using namespace std;
 int main() {
     interpreter interpreter1;
 
-    list<string> l = interpeter1.lexer("I am Ori. This is so cool\n\toop\noop");
+    list<string> l = interpreter1.lexer("I am Ori. This is so cool\n\toop\noop");
 
     for (auto &it : l)
         std::cout << it << endl;
