@@ -3,3 +3,7 @@
 //
 
 #include "Minus.h"
+
+double Minus::calculate() {
+    return 0;
+}

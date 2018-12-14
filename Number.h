@@ -12,7 +12,7 @@ class Number: public Expression {
     double value;
 
 public:
-    double calculate();
+    double calculate() override;
 };
 
 

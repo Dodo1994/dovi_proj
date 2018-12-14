@@ -10,7 +10,7 @@
 class ConditionCommand : public Command{
 
 public:
-    virtual void execute() = 0;
+    void execute() override = 0;
 };
 
 

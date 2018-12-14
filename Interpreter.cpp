@@ -1,7 +1,7 @@
 
 #include "Interpreter.h"
 
-list <string> interpreter::lexer(string input) {
+list <string> Interpreter::lexer(string input) {
     int i = 0;
     string word;
     bool isFirstSpace = true;
@@ -32,7 +32,7 @@ list <string> interpreter::lexer(string input) {
     return words;
 }
 
-void interpreter::parser() {
+void Interpreter::parser() {
 
     /**
      * from eli slides:
@@ -65,6 +65,6 @@ void interpreter::parser() {
 
 }
 
-bool interpreter::isSpace(char c) {
+bool Interpreter::isSpace(char c) {
     return (c == ' ' || c == '\t'); //‫‪ c == '\n' not space, to mark new line
 }

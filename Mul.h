@@ -11,7 +11,7 @@
 class Mul : public BinaryExpression{
 
 public:
-    double calculate();
+    double calculate() override;
 
 };
 

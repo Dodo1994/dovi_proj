@@ -7,7 +7,7 @@
 
 #include "ConditionCommand.h"
 
-class IfCommand {
+class IfCommand :public ConditionCommand{
 
 
 public:

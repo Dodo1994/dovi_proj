@@ -7,10 +7,11 @@ using namespace std;
 #include <string>
 #include <list>
 #include <map>
-#include "Expression.h"
+#include "Command.h"
 
-class interpreter {
-    map<string, Expression> vars_map;
+class Interpreter {
+    map<string, double> symTbl;
+    map<string, Command> cmdMap;
 
 public:
     list<string> lexer(string input);

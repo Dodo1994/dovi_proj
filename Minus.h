@@ -10,7 +10,7 @@
 class Minus : public BinaryExpression{
 
 public:
-    double calculate();
+    double calculate() override;
 
 };
 

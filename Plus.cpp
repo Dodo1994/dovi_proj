@@ -3,3 +3,7 @@
 //
 
 #include "Plus.h"
+
+double Plus::calculate() {
+    return BinaryExpression::calculate();
+}

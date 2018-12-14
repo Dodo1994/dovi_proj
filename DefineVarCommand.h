@@ -1,6 +1,3 @@
-//
-// Created by ori on 12/14/18.
-//
 
 #ifndef ORI_LEXER_DEFINEVARCOMMAND_H
 #define ORI_LEXER_DEFINEVARCOMMAND_H
@@ -13,5 +10,4 @@ public:
     void execute();
 };
 
-
-#endif //ORI_LEXER_DEFINEVARCOMMAND_H
+#endif

@@ -3,3 +3,7 @@
 //
 
 #include "OpenServerCommand.h"
+
+void OpenServerCommand::execute() {
+    Command::execute();
+}

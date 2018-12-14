@@ -11,7 +11,7 @@
 class OpenServerCommand : Command{
 
 public:
-    void execute();
+    void execute() override;
 
 };
 
