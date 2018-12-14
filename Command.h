@@ -7,6 +7,7 @@
 #include "Interpreter.h"
 
 class Command {
+protected:
     vector<string> args;
     Interpreter* interpreter;
 

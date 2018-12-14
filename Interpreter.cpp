@@ -68,3 +68,11 @@ void Interpreter::parser() {
 bool Interpreter::isSpace(char c) {
     return (c == ' ' || c == '\t'); //‫‪ c == '\n' not space, to mark new line
 }
+
+map<string, double> Interpreter::getSymTbl() {
+    return this->symTbl;
+}
+
+map <string, Command> Interpreter::getCmdMap() {
+    return this->cmdMap;
+}
