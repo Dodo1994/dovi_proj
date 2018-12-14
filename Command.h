@@ -4,16 +4,14 @@
 
 #include <vector>
 #include <string>
-#include "Interpreter.h"
 
 class Command {
 protected:
-    vector<string> args;
-    Interpreter* interpreter;
+    std::vector<std::string> args;
 
 public:
-    Command(vector<string> args, Interpreter* interpreter);
-    virtual void execute()=0;
+    Command(std::vector<std::string> args);
+    virtual void execute();
 };
 
 

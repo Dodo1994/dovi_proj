@@ -1,19 +1,34 @@
 #include <iostream>
 #include <cstring>
 #include <list>
+#include <fstream>
+#include <sstream>
 #include "Interpreter.h"
 
 using namespace std;
 
-// test for lexer
+// test
 int main() {
-    interpreter interpreter1;
+    Interpreter interpreter;
 
-    list<string> l = interpreter1.lexer("I am Ori. This is so cool\n\toop\noop");
+    ifstream infile;
+    infile.open ("flight_code.txt");
+    // one of the scariest lines i ever seen
+    std::string input(dynamic_cast<std::stringstream const&>(std::stringstream() << infile.rdbuf()).str());
+    list<string> l = interpreter.lexer(input);
 
+    // display lexer result
     for (auto &it : l)
-        std::cout << it << endl;
+        std::cout << it << " ";
+
+    // display vars
+    interpreter.displayVars();
+
+    //
 
     cout<<"this is stupid line"<<endl;
+
+    infile.close();
+
     return 0;
 }

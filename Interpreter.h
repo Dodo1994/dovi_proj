@@ -2,22 +2,24 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
-using namespace std;
-
 #include <string>
 #include <list>
 #include <map>
+#include <iostream>
 #include "Command.h"
 
 class Interpreter {
-    map<string, double> symTbl;
-    map<string, Command> cmdMap;
+    std::map<std::string, double> symTbl;
+    std::map<std::string, Command*> cmdMap;
 
 public:
-    list<string> lexer(string input);
+    std::list<std::string> lexer(std::string input);
     void parser();
-    map<string, double> getSymTbl();
-    map<string, Command> getCmdMap();
+    std::map<std::string, double> getSymTbl();
+    std::map<std::string, Command*> getCmdMap();
+
+    // helps debugging
+    void displayVars();
 
 private:
     bool isSpace(char c);

@@ -9,10 +9,10 @@
 #include "Command.h"
 
 class CommandExpression : public Expression{
-    Command command;
+    Command* command;
 
 public:
-    explicit CommandExpression(const Command &command);
+    explicit CommandExpression(Command* command);
     double calculate() override;
 };
 

@@ -2,7 +2,10 @@
 
 #include "Command.h"
 
-Command::Command(vector<string> args, Interpreter *interpreter) {
+Command::Command(std::vector<std::string> args) {
     this->args=move(args);
-    this->interpreter=interpreter;
+}
+
+void Command::execute() {
+
 }

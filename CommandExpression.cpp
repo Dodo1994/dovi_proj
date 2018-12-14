@@ -5,9 +5,9 @@
 #include "CommandExpression.h"
 
 double CommandExpression::calculate() {
-    this->command.execute();
+    this->command->execute();
 }
 
-CommandExpression::CommandExpression(const Command &command) {
+CommandExpression::CommandExpression(Command* command) {
     this->command=command;
 }

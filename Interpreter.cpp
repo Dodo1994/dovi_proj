@@ -1,11 +1,11 @@
 
 #include "Interpreter.h"
 
-list <string> Interpreter::lexer(string input) {
+std::list <std::string> Interpreter::lexer(std::string input) {
     int i = 0;
-    string word;
+    std::string word;
     bool isFirstSpace = true;
-    list<string> words;
+    std::list<std::string> words;
 
     // pass over input
     while (i < input.size()) {
@@ -69,10 +69,15 @@ bool Interpreter::isSpace(char c) {
     return (c == ' ' || c == '\t'); //‫‪ c == '\n' not space, to mark new line
 }
 
-map<string, double> Interpreter::getSymTbl() {
+std::map<std::string, double> Interpreter::getSymTbl() {
     return this->symTbl;
 }
 
-map <string, Command> Interpreter::getCmdMap() {
+std::map <std::string, Command*> Interpreter::getCmdMap() {
     return this->cmdMap;
+}
+
+void Interpreter::displayVars() {
+    for (auto &it : this->getSymTbl())
+        std::cout << it.first << "," << it.second << std::endl;
 }

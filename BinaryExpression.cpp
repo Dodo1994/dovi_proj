@@ -3,3 +3,7 @@
 //
 
 #include "BinaryExpression.h"
+
+double BinaryExpression::calculate() {
+    return Expression::calculate();
+}

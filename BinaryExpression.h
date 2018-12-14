@@ -8,10 +8,8 @@
 #include "Expression.h"
 
 class BinaryExpression :public Expression{
-
-    Expression right;
-    Expression left;
-
+    Expression* right;
+    Expression* left;
 
 public:
     virtual double calculate();
