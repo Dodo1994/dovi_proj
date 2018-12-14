@@ -1,11 +1,12 @@
 
 #include "Interpreter.h"
+#include "DefineVarCommand.h"
 
-std::list <std::string> Interpreter::lexer(std::string input) {
+vector<string> Interpreter::lexer(string input) {
     int i = 0;
-    std::string word;
+    string word;
     bool isFirstSpace = true;
-    std::list<std::string> words;
+    vector<string> words;
 
     // pass over input
     while (i < input.size()) {
@@ -32,7 +33,20 @@ std::list <std::string> Interpreter::lexer(std::string input) {
     return words;
 }
 
-void Interpreter::parser() {
+void Interpreter::parser(vector<string> input) {
+
+    int i = 0;
+    Command* command;
+    while (i<input.size()) {
+        cout<<i;
+        if(this->cmdMap.count(input[i])) { // bug execute only first var
+            command = this->cmdMap.at(input[i]);
+            i+=command->execute(input,i);
+        }else {
+            i++;
+        }
+    }
+
 
     /**
      * from eli slides:
@@ -66,18 +80,35 @@ void Interpreter::parser() {
 }
 
 bool Interpreter::isSpace(char c) {
-    return (c == ' ' || c == '\t'); //‫‪ c == '\n' not space, to mark new line
+    return (c == ' ' || c == '\n' || c == '\t');
 }
 
-std::map<std::string, double> Interpreter::getSymTbl() {
+map<string, double> Interpreter::getSymTbl() {
     return this->symTbl;
 }
 
-std::map <std::string, Command*> Interpreter::getCmdMap() {
+map<string, Command*> Interpreter::getCmdMap() {
     return this->cmdMap;
 }
 
 void Interpreter::displayVars() {
-    for (auto &it : this->getSymTbl())
-        std::cout << it.first << "," << it.second << std::endl;
+    cout<<endl;
+    for (auto &it : this->symPath)
+        cout << it.first << "," << it.second << endl;
+}
+
+Interpreter::Interpreter() {
+    Command* c1 = new DefineVarCommand(&this->symPath);
+    this->cmdMap.insert(pair<string, Command*>("var", c1));
+}
+
+Interpreter::~Interpreter() {
+
+    map<string, int>::iterator it;
+
+    for (auto &it : this->cmdMap) {
+        if (it.second != NULL) {
+            delete(it.second);
+        }
+    }
 }

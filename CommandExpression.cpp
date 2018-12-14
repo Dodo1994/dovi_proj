@@ -5,7 +5,7 @@
 #include "CommandExpression.h"
 
 double CommandExpression::calculate() {
-    this->command->execute();
+    //this->command->execute();
 }
 
 CommandExpression::CommandExpression(Command* command) {

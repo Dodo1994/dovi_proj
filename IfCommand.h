@@ -11,7 +11,7 @@ class IfCommand :public ConditionCommand{
 
 
 public:
-    void execute();
+    int execute(vector<string> args);
 
 };
 

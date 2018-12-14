@@ -4,6 +4,6 @@
 
 #include "OpenServerCommand.h"
 
-void OpenServerCommand::execute() {
-    Command::execute();
+int OpenServerCommand::execute(vector<string> code, int index) {
+
 }

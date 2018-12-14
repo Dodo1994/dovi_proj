@@ -4,6 +4,6 @@
 
 #include "ConnectCommand.h"
 
-void ConnectCommand::execute() {
+int ConnectCommand::execute(vector<string> code, int index) {
 
 }

@@ -6,11 +6,11 @@
 #include "Command.h"
 
 class DefineVarCommand : public Command{
-    std::map<std::string, double> symTbl;
+    map<string, string>* symPath;
 
 public:
-    explicit DefineVarCommand(std::vector<std::string> args, std::map<std::string, double> symTbl);
-    void execute();
+    explicit DefineVarCommand(map<string, string>* symPath);
+    int execute(vector<string> code, int index) override;
 };
 
 #endif

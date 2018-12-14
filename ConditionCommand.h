@@ -10,7 +10,7 @@
 class ConditionCommand : public Command{
 
 public:
-    void execute() override = 0;
+    int execute(vector<string> code, int index) override = 0;
 };
 
 

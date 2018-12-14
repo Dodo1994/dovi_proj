@@ -4,6 +4,6 @@
 
 #include "IfCommand.h"
 
-void IfCommand::execute() {
+int IfCommand::execute(vector<string> args) {
 
 }

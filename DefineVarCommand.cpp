@@ -5,11 +5,12 @@
 
 #include "DefineVarCommand.h"
 
-void DefineVarCommand::execute() {
-    // assume vector args[0] = varName, args[1] = varValue as strind (stod should convert to double)
-    this->symTbl.insert(std::pair<std::string,double>(this->args[0],std::stod(this->args[1])));
+int DefineVarCommand::execute(vector<string> code, int index) {
+    // assume vector args[index+1] = varName, args[index+4] = varPath
+    this->symPath->insert(pair<string,string>(code[index+1], code[index+4]));
+    return 5;//add to index
 }
 
-DefineVarCommand::DefineVarCommand(std::vector<std::string> args, std::map<std::string, double> symTbl) : Command(std::move(args)) {
-    this->symTbl = move(symTbl);
+DefineVarCommand::DefineVarCommand(map<string, string> *symPath) {
+    this->symPath = symPath;
 }
