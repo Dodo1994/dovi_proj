@@ -11,6 +11,7 @@ using namespace std;
 int main() {
     Interpreter interpreter;
 
+    // read from file the code to test our stuff
     ifstream infile;
     infile.open ("flight_code.txt");
     // one of the scariest lines i ever seen
