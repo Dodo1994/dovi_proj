@@ -14,12 +14,12 @@ int main() {
     ifstream infile;
     infile.open ("flight_code.txt");
     // one of the scariest lines i ever seen
-    std::string input(dynamic_cast<std::stringstream const&>(std::stringstream() << infile.rdbuf()).str());
+    string input(dynamic_cast<stringstream const&>(stringstream() << infile.rdbuf()).str());
     vector<string> l = interpreter.lexer(input);
 
     // display lexer result
     for (auto &it : l)
-        std::cout << it << " ";
+        cout << it << " ";
 
 
     interpreter.parser(l);
