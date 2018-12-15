@@ -35,6 +35,21 @@ vector<string> Interpreter::lexer(string input) {
 
 void Interpreter::parser(vector<string> input) {
 
+    /**
+     * Hi Dovi!!
+     * there are 3 maps members of the interpreter (do you think to put them elsewhere?)
+     * map<string, double> getSymTbl();
+     * map<string, string> getSymPath();
+     * map<string, Command*> getCmdMap();
+     *
+     * here it is a loop to pass over the code and call commands. BUG!! call only first command
+     * pay attention there is no need in '/n' to mark newline
+     *
+     *
+     * command get 2 args: the whole code vector and current index. do you think about something else?
+     *
+     */
+
     int i = 0;
     Command* command;
     while (i<input.size()) {
