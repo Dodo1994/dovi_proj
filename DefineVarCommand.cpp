@@ -5,7 +5,7 @@
 
 #include "DefineVarCommand.h"
 
-int DefineVarCommand::doCommand() {
+void DefineVarCommand::doCommand() {
     this->symTbl->insert(pair<string, VarData*>(this->name, new VarData(this->value, this->path)));
 }
 

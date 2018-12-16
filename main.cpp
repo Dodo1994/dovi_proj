@@ -7,6 +7,12 @@
 
 using namespace std;
 
+void lexerTest(vector<string> v) {
+    // test lexer result
+    for (auto &it : v)
+        cout << it << "\n";
+}
+
 // test
 int main() {
     Interpreter interpreter;
@@ -16,17 +22,15 @@ int main() {
     infile.open ("flight_code.txt");
     // one of the scariest lines i ever seen
     string input(dynamic_cast<stringstream const&>(stringstream() << infile.rdbuf()).str());
-    vector<string> l = interpreter.lexer(input);
+    vector<string> v = interpreter.lexer(input);
 
-    // display lexer result
-    for (auto &it : l)
-        cout << it << "\n";
+    // lexer test
+    lexerTest(v);
 
+    //interpreter.displaySymTbl();
 
-    interpreter.parser(l);
-    // display vars
-
-    //
+    // parser
+    interpreter.parser(v);
 
     cout<<"this is stupid line"<<endl;
 

@@ -64,14 +64,15 @@ void Interpreter::parser(vector<string> code) {
     Command* command;
     while (index<code.size()) {
         // not null iff this is a word of command
-        if(command = this->factory->createCommand(code, index)){
-            this->commands->addCommand(command);
+        if((command = this->factory->createCommand(code, index))){
+            command->doCommand();
         }
         ++index;
     }
 
-    // run commands
-    this->commands->doCommands();
+
+    // tried to add to collection and run all commands after, but there is a problem
+    // need updated map in realtime
 }
 
 Interpreter::Interpreter() {
@@ -85,4 +86,9 @@ Interpreter::~Interpreter() {
     for (auto &it : this->symTbl) {
         delete it.second;
     }
+}
+
+void Interpreter::displaySymTbl() {
+    for (auto &it : this->symTbl)
+        cout << "name: " << it.first << " val: " << it.second->getValue() << " path: " << it.second->getPath();
 }

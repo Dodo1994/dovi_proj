@@ -22,6 +22,9 @@ public:
     ~Interpreter();
     vector< string> lexer(string input);
     void parser(vector<string> input);
+
+    //debug
+    void displaySymTbl();
 };
 
 

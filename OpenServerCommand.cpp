@@ -4,6 +4,6 @@
 
 #include "OpenServerCommand.h"
 
-int OpenServerCommand::doCommand() {
+void OpenServerCommand::doCommand() {
 
 }

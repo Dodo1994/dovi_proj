@@ -15,7 +15,7 @@ class DefineVarCommand : public Command{
 
 public:
     explicit DefineVarCommand(vector<string> code, int index, map<string, VarData*>* symTbl);
-    int doCommand() override;
+    void doCommand() override;
 };
 
 #endif

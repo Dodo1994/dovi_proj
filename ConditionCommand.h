@@ -10,7 +10,7 @@
 class ConditionCommand : public Command{
 
 public:
-    int doCommand() override = 0;
+    void doCommand() override = 0;
 };
 
 

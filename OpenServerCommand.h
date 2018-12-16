@@ -8,7 +8,7 @@
 class OpenServerCommand : Command{
 
 public:
-    int doCommand() override;
+    void doCommand() override;
 
 };
 
