@@ -4,6 +4,6 @@
 
 #include "LoopCommand.h"
 
-int LoopCommand::execute(vector<string> code, int index) {
+int LoopCommand::doCommand(vector <string> code, int index) {
 
 }

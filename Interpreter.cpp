@@ -5,27 +5,49 @@
 vector<string> Interpreter::lexer(string input) {
     int i = 0;
     string word;
-    bool isFirstSpace = true;
+    bool isFirstBlank = true;
+    bool isPath = false;
     vector<string> words;
 
     // pass over input
     while (i < input.size()) {
-        // pass over spaces
-        while (isSpace(input[i]) && i < input.size()) {
-            // if first space after word
-            if(isFirstSpace) {
-                isFirstSpace = false;
-                // add word and init word
+        if(input[i] == '"'){
+            isPath = true;
+        }
+        if (input[i] == '\n') {
+            if(word!="") {
+                words.push_back(word);
+                word="";
+            }
+            words.push_back(";");
+            isFirstBlank= true;
+            isPath= false;
+        } else if (input[i] == '+' || input[i] == '%' || input[i] == '('|| input[i] == ')') {
+            if(word!="") {
+                words.push_back(word);
+                word="";
+            }
+            words.push_back(string(1,input[i]));
+            isFirstBlank= true;
+        } else if(!isPath && (input[i]=='/' || input[i]=='-')){
+            if(word!="") {
+                words.push_back(word);
+                word="";
+            }
+            words.push_back(string(1,input[i]));
+            isFirstBlank= true;
+        } else if (input[i] == ' ' || input[i] == '\t') {
+            if(isFirstBlank && word!="") {
                 words.push_back(word);
                 word = "";
+                isFirstBlank = false;
             }
-            ++i;
+        } else {
+            word+=input[i];
+            cout<<word;
+            isFirstBlank= true;
         }
-        // add char to word
-        word+=input[i];
-        // init first space
-        isFirstSpace = true;
-        ++i;
+        i++;
     }
     // add last word
     words.push_back(word);
@@ -54,10 +76,10 @@ void Interpreter::parser(vector<string> input) {
     Command* command;
     while (i<input.size()) {
         cout<<i;
-        if(this->cmdMap.count(input[i])) { // bug execute only first var
+        if(this->cmdMap.count(input[i])) { // bug doCommand only first var
             command = this->cmdMap.at(input[i]);
-            i+=command->execute(input,i);
-        }else {
+            i+= command->doCommand();//fix send only args and not whole input
+        } else {
             i++;
         }
     }
@@ -94,36 +116,14 @@ void Interpreter::parser(vector<string> input) {
 
 }
 
-bool Interpreter::isSpace(char c) {
-    return (c == ' ' || c == '\n' || c == '\t');
-}
-
-map<string, double> Interpreter::getSymTbl() {
-    return this->symTbl;
-}
-
-map<string, Command*> Interpreter::getCmdMap() {
-    return this->cmdMap;
-}
-
-void Interpreter::displayVars() {
-    cout<<endl;
-    for (auto &it : this->symPath)
-        cout << it.first << "," << it.second << endl;
-}
-
 Interpreter::Interpreter() {
-    Command* c1 = new DefineVarCommand(&this->symPath);
-    this->cmdMap.insert(pair<string, Command*>("var", c1));
+    this->factory = new CommandFactory(&this->symTbl);
 }
 
 Interpreter::~Interpreter() {
-
-    map<string, int>::iterator it;
-
-    for (auto &it : this->cmdMap) {
-        if (it.second != NULL) {
-            delete(it.second);
-        }
-    }
+    delete this->factory;
 }
+
+/**
+ * FACTORY!!!!!!!!!!!!!!!!!!!
+ */

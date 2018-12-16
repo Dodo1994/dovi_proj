@@ -10,7 +10,7 @@
 class LoopCommand : public ConditionCommand{
 
 public:
-    int execute(vector<string> code, int index);
+    int doCommand(vector <string> code, int index);
 
 };
 

@@ -10,7 +10,7 @@
 class ConnectCommand: public Command {
 
 public:
-    int execute(vector<string> code, int index);
+    int doCommand(vector <string> code, int index);
 };
 
 

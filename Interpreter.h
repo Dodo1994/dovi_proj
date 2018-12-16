@@ -6,28 +6,20 @@
 #include <list>
 #include <map>
 #include <iostream>
+#include "VarData.h"
 #include "Command.h"
+#include "CommandFactory.h"
 
 class Interpreter {
-    map<string, double> symTbl;
-    // example: ‫‪var‬‬ ‫‪roll‬‬ ‫=‬ ‫‪bind‬‬ ‫"‪"/instrumentation/attitude-indicator/indicated-roll-deg‬‬
-    map<string, string> symPath;
+    map<string, VarData*> symTbl;
     map<string, Command*> cmdMap;
+    CommandFactory* factory;
 
 public:
     Interpreter();
     ~Interpreter();
     vector< string> lexer(string input);
     void parser(vector<string> input);
-    map<string, double> getSymTbl();
-    map<string, string> getSymPath();
-    map<string, Command*> getCmdMap();
-
-    // helps debugging
-    void displayVars();
-
-private:
-    bool isSpace(char c);
 };
 
 

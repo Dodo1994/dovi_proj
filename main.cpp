@@ -20,12 +20,11 @@ int main() {
 
     // display lexer result
     for (auto &it : l)
-        cout << it << " ";
+        cout << it << "\n";
 
 
     interpreter.parser(l);
     // display vars
-    interpreter.displayVars();
 
     //
 

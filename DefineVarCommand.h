@@ -4,13 +4,14 @@
 
 #include <map>
 #include "Command.h"
+#include "VarData.h"
 
 class DefineVarCommand : public Command{
-    map<string, string>* symPath;
+    map<string, VarData*>* symTbl;
 
 public:
-    explicit DefineVarCommand(map<string, string>* symPath);
-    int execute(vector<string> code, int index) override;
+    explicit DefineVarCommand(vector<string> code, map<string, VarData*>* symTbl);
+    int doCommand() override;
 };
 
 #endif
