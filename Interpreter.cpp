@@ -58,28 +58,38 @@ vector<string> Interpreter::lexer(string input) {
     return words;
 }
 
-void Interpreter::parser(vector<string> input) {
-
-    int i = 0;
+void Interpreter::parser(vector<string> code) {
+    int i = 0, j;
     Command* command;
-    while (i<input.size()) {
-        cout<<i;
-        if(this->cmdMap.count(input[i])) { // bug doCommand only first var
-            command = this->cmdMap.at(input[i]);
-            i+= command->doCommand();//fix send only args and not whole input
-        } else {
-            i++;
+    list<string> codeChunk;
+    while (i<code.size()) {
+        // take this line only
+        if (code[i]==";"){
+            j = i+1;
+            codeChunk.clear();
+            while (code[j]!=";"){
+                codeChunk.push_front(code[j]);
+                j++;
+            }
+        }
+        // not null iff this is a word of command
+        if(!(command = this->factory->createCommand(code[i], codeChunk))){
+            this->commands->addCommand(command);
         }
     }
 
+    // run commands
+    this->commands->doCommands();
 }
 
 Interpreter::Interpreter() {
     this->factory = new CommandFactory(&this->symTbl);
+    this->commands = new CmdsCollection();
 }
 
 Interpreter::~Interpreter() {
     delete this->factory;
+    delete this->commands;
 }
 
 /**

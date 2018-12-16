@@ -9,11 +9,13 @@
 #include "VarData.h"
 #include "Command.h"
 #include "CommandFactory.h"
+#include "CmdsCollection.h"
 
 class Interpreter {
     map<string, VarData*> symTbl;
     map<string, Command*> cmdMap;
     CommandFactory* factory;
+    CmdsCollection* commands;
 
 public:
     Interpreter();
