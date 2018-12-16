@@ -11,9 +11,11 @@ vector<string> Interpreter::lexer(string input) {
 
     // pass over input
     while (i < input.size()) {
+        // case " set flag that -,/ etc. aren't operators
         if(input[i] == '"'){
             isPath = true;
         }
+        // mark end line with ;
         if (input[i] == '\n') {
             if(word!="") {
                 words.push_back(word);
@@ -22,29 +24,30 @@ vector<string> Interpreter::lexer(string input) {
             words.push_back(";");
             isFirstBlank= true;
             isPath= false;
+            // operators
         } else if (input[i] == '+' || input[i] == '%' || input[i] == '('|| input[i] == ')') {
             if(word!="") {
                 words.push_back(word);
                 word="";
             }
             words.push_back(string(1,input[i]));
-            isFirstBlank= true;
+            // case not in path, /,- are operators
         } else if(!isPath && (input[i]=='/' || input[i]=='-')){
             if(word!="") {
                 words.push_back(word);
                 word="";
             }
             words.push_back(string(1,input[i]));
-            isFirstBlank= true;
+            // blanks
         } else if (input[i] == ' ' || input[i] == '\t') {
             if(isFirstBlank && word!="") {
                 words.push_back(word);
                 word = "";
                 isFirstBlank = false;
             }
+            //regular chars
         } else {
             word+=input[i];
-            cout<<word;
             isFirstBlank= true;
         }
         i++;
@@ -56,21 +59,6 @@ vector<string> Interpreter::lexer(string input) {
 }
 
 void Interpreter::parser(vector<string> input) {
-
-    /**
-     * Hi Dovi!!
-     * there are 3 maps members of the interpreter (do you think to put them elsewhere?)
-     * map<string, double> getSymTbl();
-     * map<string, string> getSymPath();
-     * map<string, Command*> getCmdMap();
-     *
-     * here it is a loop to pass over the code and call commands. BUG!! call only first command
-     * pay attention there is no need in '/n' to mark newline
-     *
-     *
-     * command get 2 args: the whole code vector and current index. do you think about something else?
-     *
-     */
 
     int i = 0;
     Command* command;
@@ -84,36 +72,6 @@ void Interpreter::parser(vector<string> input) {
         }
     }
 
-
-    /**
-     * from eli slides:
-     *
-     *  Command interface with function execute(string):int
-     *
-     *
-     *  MAP <string,Command> for commands
-     *
-     *  openDataServer = OpenServerCommand
-     *  connect = ConnectCommand
-     *  var = DefineVarCommand
-     *
-     * Command c = map.get(array[index]);
-     * if(c!=null)
-     *  index += c.execute(array[index]);
-     *
-     *
-     *  MAP <string,Double> for vars
-     *
-     *  brakes -> 0
-     *
-     *  throttle = 1
-     *  symTbl.put("throttle", 1.0)
-     *
-     *
-     * More Commands
-     *
-     */
-
 }
 
 Interpreter::Interpreter() {
@@ -126,4 +84,35 @@ Interpreter::~Interpreter() {
 
 /**
  * FACTORY!!!!!!!!!!!!!!!!!!!
+ */
+
+
+
+/**
+ * from eli slides:
+ *
+ *  Command interface with function execute(string):int
+ *
+ *
+ *  MAP <string,Command> for commands
+ *
+ *  openDataServer = OpenServerCommand
+ *  connect = ConnectCommand
+ *  var = DefineVarCommand
+ *
+ * Command c = map.get(array[index]);
+ * if(c!=null)
+ *  index += c.execute(array[index]);
+ *
+ *
+ *  MAP <string,Double> for vars
+ *
+ *  brakes -> 0
+ *
+ *  throttle = 1
+ *  symTbl.put("throttle", 1.0)
+ *
+ *
+ * More Commands
+ *
  */
