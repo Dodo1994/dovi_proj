@@ -11,7 +11,7 @@ double value;
 string path;
 
 public:
-    VarData()= default;
+    VarData(double value, string path);
     double getValue();
     string getPath();
     void setValue(double newValue);

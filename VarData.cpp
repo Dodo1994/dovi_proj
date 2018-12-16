@@ -19,3 +19,8 @@ void VarData::setValue(double newValue) {
 void VarData::setPath(string newPath) {
     this->path = newPath;
 }
+
+VarData::VarData(double value, string path) {
+    this->value=value;
+    this->path=path;
+}
