@@ -14,16 +14,12 @@
 class Interpreter {
     map<string, VarData*> symTbl;
     CommandFactory* factory;
-    CmdsCollection* commands;
 
 public:
     Interpreter();
     ~Interpreter();
     vector< string> lexer(string input);
     void parser(vector<string> input);
-
-    //debug
-    void displaySymTbl();
 };
 
 

@@ -27,8 +27,6 @@ int main() {
     // lexer test
     lexerTest(v);
 
-    //interpreter.displaySymTbl();
-
     // parser
     interpreter.parser(v);
 

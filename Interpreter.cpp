@@ -85,10 +85,7 @@ Interpreter::Interpreter() {
 
 Interpreter::~Interpreter() {
     delete this->factory;
-
+    // free al VarData
     for (auto &it : this->symTbl)
         delete it.second;
-}
-
-void Interpreter::displaySymTbl() {
 }
