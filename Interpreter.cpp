@@ -25,12 +25,12 @@ vector<string> Interpreter::lexer(string input) {
             isFirstBlank= true;
             isPath= false;
             // operators
-        } else if (input[i] == '+' || input[i] == '%' || input[i] == '('|| input[i] == ')') {
+        } else if (input[i] == '=' || input[i] == '+' || input[i] == '%' || input[i] == '(' || input[i] == ')') {
             if(word!="") {
                 words.push_back(word);
                 word="";
             }
-            words.push_back(string(1,input[i]));
+            words.push_back(string(1, input[i]));
             // case not in path, /,- are operators
         } else if(!isPath && (input[i]=='/' || input[i]=='-')){
             if(word!="") {
@@ -64,8 +64,12 @@ void Interpreter::parser(vector<string> code) {
     Command* command;
     while (index<code.size()) {
         // not null iff this is a word of command
-        if((command = this->factory->createCommand(code, index))){
+        if((command = this->factory->createCommand(&code, index))){
             command->doCommand();
+            // heuristic - after command can go to the end of the line
+            while (code[index]!=";" && index<code.size()-1){
+                ++index;
+            }
         }
         ++index;
     }
@@ -77,18 +81,14 @@ void Interpreter::parser(vector<string> code) {
 
 Interpreter::Interpreter() {
     this->factory = new CommandFactory(&this->symTbl);
-    this->commands = new CmdsCollection();
 }
 
 Interpreter::~Interpreter() {
     delete this->factory;
-    delete this->commands;
-    for (auto &it : this->symTbl) {
+
+    for (auto &it : this->symTbl)
         delete it.second;
-    }
 }
 
 void Interpreter::displaySymTbl() {
-    for (auto &it : this->symTbl)
-        cout << "name: " << it.first << " val: " << it.second->getValue() << " path: " << it.second->getPath();
 }

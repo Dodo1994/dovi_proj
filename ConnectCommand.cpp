@@ -1,9 +1,16 @@
+#include <utility>
+
 //
 // Created by ori on 12/14/18.
 //
 
 #include "ConnectCommand.h"
 
-int ConnectCommand::doCommand(vector <string> code, int index) {
+void ConnectCommand::doCommand() {
 
+}
+
+ConnectCommand::ConnectCommand(string ip, int port) {
+    this->ip= move(ip);
+    this->port=port;
 }

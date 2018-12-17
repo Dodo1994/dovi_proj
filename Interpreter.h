@@ -13,7 +13,6 @@
 
 class Interpreter {
     map<string, VarData*> symTbl;
-    map<string, Command*> cmdMap;
     CommandFactory* factory;
     CmdsCollection* commands;
 

@@ -8,9 +8,12 @@
 #include "Command.h"
 
 class ConnectCommand: public Command {
+    string ip;
+    int port;
 
 public:
-    int doCommand(vector <string> code, int index);
+    ConnectCommand(string ip, int port);
+    void doCommand();
 };
 
 
