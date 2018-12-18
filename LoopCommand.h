@@ -6,11 +6,13 @@
 #define ORI_LEXER_LOOPCOMMAND_H
 
 #include "ConditionCommand.h"
+#include "CommandFactory.h"
 
 class LoopCommand : public ConditionCommand{
 
 public:
-    int doCommand(vector <string> code, int index);
+    LoopCommand(vector<string> *input,CommandFactory *factory, map<string,VarData*>* data);
+    void doCommand();
 
 };
 

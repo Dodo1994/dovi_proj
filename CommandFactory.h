@@ -16,7 +16,7 @@ class CommandFactory {
 
 public:
     CommandFactory(map<string, VarData*>* symTbl);
-    Command* createCommand(vector<string>* code, int index);
+    Command* createCommand(vector<string> code);
 };
 
 

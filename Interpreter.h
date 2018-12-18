@@ -12,6 +12,7 @@
 #include "CmdsCollection.h"
 
 class Interpreter {
+    map<string,string> codeMap;
     map<string, VarData*> symTbl;
     CommandFactory* factory;
 

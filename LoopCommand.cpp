@@ -1,9 +1,12 @@
-//
-// Created by ori on 12/14/18.
-//
 
 #include "LoopCommand.h"
 
-int LoopCommand::doCommand(vector <string> code, int index) {
+LoopCommand::LoopCommand(vector<string> *input, CommandFactory *factory, map<string, VarData *> *data)
+        : ConditionCommand(factory, input, data) {}
 
+void LoopCommand::doCommand() {
+    int left, right, index=1;
+    if(){
+
+    }
 }
