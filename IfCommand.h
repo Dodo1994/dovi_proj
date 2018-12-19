@@ -11,7 +11,8 @@ class IfCommand :public ConditionCommand{
 
 
 public:
-    int execute(vector<string> args);
+    IfCommand(vector<string> *input,CommandFactory *factory, map<string,VarData*>* data);
+    void doCommand();
 
 };
 
