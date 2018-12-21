@@ -13,44 +13,61 @@ vector<string> Interpreter::lexer(string input) {
     // pass over input
     while (i < input.size()) {
         // case " set flag that -,/ etc. aren't operators
-        if(input[i] == '"'){
+        if (input[i] == '"') {
             isPath = true;
         }
         // mark end line with ;
         if (input[i] == '\n') {
-            if(word!="") {
+            if (word != "") {
                 words.push_back(word);
-                word="";
+                word = "";
             }
             words.push_back(";");
-            isFirstBlank= true;
-            isPath= false;
+            isFirstBlank = true;
+            isPath = false;
             // operators
-        } else if (input[i] == '=' || input[i] == '+' || input[i] == '*' || input[i] == '(' || input[i] == ')'
-                   || input[i] == '<' || input[i] == '>') {
-            if(word!="") {
+        } else if (input[i] == '+' || input[i] == '*' || input[i] == '(' || input[i] == ')') {
+            if (word != "") {
                 words.push_back(word);
-                word="";
+                word = "";
             }
             words.push_back(string(1, input[i]));
-            // case not in path, /,- are operators
-        } else if(!isPath && (input[i]=='/' || input[i]=='-')){
-            if(word!="") {
+
+        } else if (input[i] == '=' || input[i] == '<' || input[i] == '>') {
+            if (input[i + 1] == '=') {
+                if (word != "") {
+                    words.push_back(word);
+                    word = "";
+                }
+                word = input[i] + input[i + 1];
                 words.push_back(word);
-                word="";
+                word = "";
+                i++;
+            } else {
+                if (word != "") {
+                    words.push_back(word);
+                    word = "";
+                }
+                words.push_back(string(1, input[i]));
             }
-            words.push_back(string(1,input[i]));
+            // case not in path, /,- are operators
+        } else if (!isPath && (input[i] == '/' || input[i] == '-')) {
+            if (word != "") {
+                words.push_back(word);
+                word = "";
+            }
+            words.push_back(string(1, input[i]));
             // blanks
         } else if (input[i] == ' ' || input[i] == '\t') {
-            if(isFirstBlank && word!="") {
+            if (isFirstBlank && word != "") {
                 words.push_back(word);
                 word = "";
                 isFirstBlank = false;
             }
             //regular chars
         } else {
-            word+=input[i];
-            isFirstBlank= true;
+            word += input[i];
+            isFirstBlank = true;
         }
         i++;
     }
@@ -77,7 +94,7 @@ Interpreter::Interpreter() {
     this->codeMap["if"] = "condition";
     this->codeMap["="] = "command";
     this->expressions = new ExpsCollection();
-    this->threads=new Threads;
+    this->threads = new Threads;
     this->factory = new CommandFactory(&this->symTbl, &this->codeMap, this->threads);
 }
 
