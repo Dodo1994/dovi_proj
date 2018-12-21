@@ -1,10 +1,3 @@
-//
-// Created by ori on 12/14/18.
-//
-
-#ifndef ORI_LEXER_COMMANDEXPRESSION_H
-#define ORI_LEXER_COMMANDEXPRESSION_H
-
 #include "Expression.h"
 #include "Command.h"
 
@@ -15,6 +8,3 @@ public:
     explicit CommandExpression(Command* command);
     double calculate() override;
 };
-
-
-#endif //ORI_LEXER_COMMANDEXPRESSION_H

@@ -1,4 +1,2 @@
-
-
 #include "Command.h"
 

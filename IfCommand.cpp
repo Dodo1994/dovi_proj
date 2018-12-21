@@ -1,36 +1,46 @@
-//
-// Created by ori on 12/14/18.
-//
+#include <utility>
 
+
+#include <iostream>
 #include "IfCommand.h"
+#include "CommandFactory.h"
+#include "Utils.h"
+#include "Parser.h"
+
 
 void IfCommand::doCommand() {
     int index = 1;
-    list<string> expressions;
-    while ((*input)[index] != "{") {
-        expressions.push_back((*input)[index]);
+    Utils utils;
+    Parser parser;
+    list<string> condition;
+    vector<string> blockCode;
+
+    while (this->code[index] != "{") {
+        cout << this->code[index] << endl;
+        condition.push_back(this->code[index]);
         index++;
     }
-    Utils utils;
-    if (utils.evaluate(expressions, data).calculate()) {
-        int i = index + 2;
-        Command *command;
-        vector<string> commandCode;
-        while (i < (*input).size()) {
-            commandCode.clear();
-            commandCode.push_back((*input)[i]);
-            i++;
-            while ((*input)[i] != ";") {
-                commandCode.push_back((*input)[i]);
-                i++;
-            }
-            i++;
-            if (command = this->factory->createCommand(commandCode)) {
-                command->doCommand();
-            }
-        }
+    index += 2;
+    for (index; index < this->code.size(); ++index) {
+        blockCode.push_back(this->code[index]);
+    }
+
+    if (utils.evaluate(condition, this->symTbl)->calculate()) {
+        parser.parse(blockCode, this->expressions, this->factory, this->cmdMap);
+        this->expressions->executeAll();
     }
 }
 
-IfCommand::IfCommand(vector<string> *input, CommandFactory *factory, map<string, VarData *> *data) : ConditionCommand(
-        factory, input, data) {}
+IfCommand::IfCommand(vector<string> &code, CommandFactory *factory, map<string, VarData *> *symTbl, map<string,string> *cmdMap) {
+    for (const auto &i : code) {
+        this->code.push_back(i);
+    }
+    this->factory=factory;
+    this->symTbl=symTbl;
+    this->cmdMap= cmdMap;
+    this->expressions=new ExpsCollection;
+}
+
+IfCommand::~IfCommand() {
+    delete this->expressions;
+}

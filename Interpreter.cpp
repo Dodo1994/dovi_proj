@@ -1,6 +1,7 @@
-
 #include "Interpreter.h"
 #include "DefineVarCommand.h"
+#include "CommandExpression.h"
+#include "Parser.h"
 
 vector<string> Interpreter::lexer(string input) {
     int i = 0;
@@ -12,43 +13,44 @@ vector<string> Interpreter::lexer(string input) {
     // pass over input
     while (i < input.size()) {
         // case " set flag that -,/ etc. aren't operators
-        if (input[i] == '"') {
+        if(input[i] == '"'){
             isPath = true;
         }
         // mark end line with ;
         if (input[i] == '\n') {
-            if (word != "") {
+            if(word!="") {
                 words.push_back(word);
-                word = "";
+                word="";
             }
             words.push_back(";");
-            isFirstBlank = true;
-            isPath = false;
+            isFirstBlank= true;
+            isPath= false;
             // operators
-        } else if (input[i] == '=' || input[i] == '+' || input[i] == '%' || input[i] == '(' || input[i] == ')') {
-            if (word != "") {
+        } else if (input[i] == '=' || input[i] == '+' || input[i] == '*' || input[i] == '(' || input[i] == ')'
+                   || input[i] == '<' || input[i] == '>') {
+            if(word!="") {
                 words.push_back(word);
-                word = "";
+                word="";
             }
             words.push_back(string(1, input[i]));
             // case not in path, /,- are operators
-        } else if (!isPath && (input[i] == '/' || input[i] == '-')) {
-            if (word != "") {
+        } else if(!isPath && (input[i]=='/' || input[i]=='-')){
+            if(word!="") {
                 words.push_back(word);
-                word = "";
+                word="";
             }
-            words.push_back(string(1, input[i]));
+            words.push_back(string(1,input[i]));
             // blanks
         } else if (input[i] == ' ' || input[i] == '\t') {
-            if (isFirstBlank && word != "") {
+            if(isFirstBlank && word!="") {
                 words.push_back(word);
                 word = "";
                 isFirstBlank = false;
             }
             //regular chars
         } else {
-            word += input[i];
-            isFirstBlank = true;
+            word+=input[i];
+            isFirstBlank= true;
         }
         i++;
     }
@@ -59,46 +61,13 @@ vector<string> Interpreter::lexer(string input) {
 }
 
 void Interpreter::parser(vector<string> code) {
-    int index = 0;
-    Command *command;
-    vector<string> commandCode;
-    while (index < code.size()) {
-        if (this->codeMap.count(code[index])) {
-            if (this->codeMap[code[index]] == "command") {
-                commandCode.clear();
-                commandCode.push_back(code[index]);
-                index++;
-                while (code[index] != ";") {
-                    commandCode.push_back(code[index]);
-                    index++;
-                }
-                index++;
-                if(command = this->factory->createCommand(commandCode)){
-                    command->doCommand();
-                }
-
-            } else {
-                commandCode.clear();
-                commandCode.push_back(code[index]);
-                index++;
-                while (code[index] != "}") {
-                    commandCode.push_back(code[index]);
-                    index++;
-                }
-                index += 2;
-                if(command = this->factory->createCommand(commandCode)){
-                    command->doCommand();
-                }
-            }
-        }
-    }
-
-    // tried to add to collection and run all commands after, but there is a problem
-    // need updated map in realtime
+    this->expressions->deleteAll();
+    Parser parser;
+    parser.parse(code, this->expressions, this->factory, &this->codeMap);
+    this->expressions->executeAll();
 }
 
 Interpreter::Interpreter() {
-    this->factory = new CommandFactory(&this->symTbl);
     this->codeMap["var"] = "command";
     this->codeMap["openDataServer"] = "command";
     this->codeMap["connect"] = "command";
@@ -106,11 +75,17 @@ Interpreter::Interpreter() {
     this->codeMap["sleep"] = "command";
     this->codeMap["while"] = "condition";
     this->codeMap["if"] = "condition";
+    this->codeMap["="] = "command";
+    this->expressions = new ExpsCollection();
+    this->threads=new Threads;
+    this->factory = new CommandFactory(&this->symTbl, &this->codeMap, this->threads);
 }
 
 Interpreter::~Interpreter() {
     delete this->factory;
+    delete this->expressions;
     // free al VarData
     for (auto &it : this->symTbl)
         delete it.second;
+    delete this->threads;
 }

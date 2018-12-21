@@ -1,7 +1,3 @@
-
-#ifndef INTERPRETER_H
-#define INTERPRETER_H
-
 #include <string>
 #include <list>
 #include <map>
@@ -10,11 +6,15 @@
 #include "Command.h"
 #include "CommandFactory.h"
 #include "CmdsCollection.h"
+#include "ExpsCollection.h"
+#include "Threads.h"
 
 class Interpreter {
-    map<string,string> codeMap;
     map<string, VarData*> symTbl;
     CommandFactory* factory;
+    ExpsCollection* expressions;
+    map<string,string> codeMap;
+    Threads* threads;
 
 public:
     Interpreter();
@@ -22,6 +22,3 @@ public:
     vector< string> lexer(string input);
     void parser(vector<string> input);
 };
-
-
-#endif

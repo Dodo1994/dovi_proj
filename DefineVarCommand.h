@@ -1,7 +1,3 @@
-
-#ifndef ORI_LEXER_DEFINEVARCOMMAND_H
-#define ORI_LEXER_DEFINEVARCOMMAND_H
-
 #include <map>
 #include <list>
 #include "Command.h"
@@ -14,8 +10,6 @@ class DefineVarCommand : public Command{
     double value;
 
 public:
-    explicit DefineVarCommand(vector<string>* code, int index, map<string, VarData*>* symTbl);
+    explicit DefineVarCommand(vector<string> code, map<string, VarData*>* symTbl);
     void doCommand() override;
 };
-
-#endif

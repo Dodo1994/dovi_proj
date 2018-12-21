@@ -1,6 +1,3 @@
-//
-// Created by ori on 12/14/18.
-//
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,72 +8,117 @@
 #include <string.h>
 
 #include <sys/socket.h>
+#include <iostream>
 #include "OpenServerCommand.h"
+#include "Utils.h"
+#include "ThreadData.h"
 
-void OpenServerCommand::doCommand() {
-    int sockfd, newsockfd, portno, clilen;
-    char buffer[256];
-    struct sockaddr_in serv_addr, cli_addr;
-    int  n;
+#include <iostream>
+#include <cstdlib>
+#include <pthread.h>
 
-    /* First call to socket() function */
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+using namespace std;
 
-    if (sockfd < 0) {
-        perror("ERROR opening socket");
-        exit(1);
+static void* OpenServer(void *threadarg){
+    int socket_desc, client_sock, c, read_size;
+    struct sockaddr_in server, client;
+    char client_message[20000];
+    ThreadData* data = (ThreadData*)threadarg;
+
+    cout<<"port: "<<data->getIntArg1()<<", rate: "<<data->getIntArg2()<<endl;
+
+    //Create socket
+    socket_desc = socket(AF_INET, SOCK_STREAM, 0);
+    if (socket_desc == -1) {
+        printf("Could not create socket");
+    }
+    puts("Socket created");
+
+    //Prepare the sockaddr_in structure
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_port = htons(data->getIntArg1());
+
+    //Bind
+    if (bind(socket_desc, (struct sockaddr *) &server, sizeof(server)) < 0) {
+        //print the error message
+        perror("bind failed. Error");
+    }
+    puts("bind done");
+
+    //Listen
+    listen(socket_desc, 3);
+
+    //Accept and incoming connection
+    puts("Waiting for incoming connections...");
+    c = sizeof(struct sockaddr_in);
+
+    //accept connection from an incoming client
+    client_sock = accept(socket_desc, (struct sockaddr *) &client, (socklen_t *) &c);
+    if (client_sock < 0) {
+        perror("accept failed");
+    }
+    puts("Connection accepted");
+
+
+    int numMsg = 1;
+    //Receive a message from client
+    while ((read_size = recv(client_sock, client_message, 20000, 0)) > 0) {
+        usleep(data->getIntArg2());
+        //Send the message back to client
+        //write(client_sock , client_message , strlen(client_message));
+        //cout << numMsg++ << ": " << client_message << endl;
     }
 
-    /* Initialize socket structure */
-    bzero((char *) &serv_addr, sizeof(serv_addr));
-    portno = this->port;
-
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = INADDR_ANY;
-    serv_addr.sin_port = htons(portno);
-
-    /* Now bind the host address using bind() call.*/
-    if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
-        perror("ERROR on binding");
-        exit(1);
+    if (read_size == 0) {
+        puts("Client disconnected");
+        fflush(stdout);
+    } else if (read_size == -1) {
+        perror("recv failed");
     }
 
-    /* Now start listening for the clients, here process will
-       * go in sleep mode and will wait for the incoming connection
-    */
-
-    listen(sockfd,5);
-    clilen = sizeof(cli_addr);
-
-    /* Accept actual connection from the client */
-    newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, (socklen_t*)&clilen);
-
-    if (newsockfd < 0) {
-        perror("ERROR on accept");
-        exit(1);
-    }
-
-    /* If connection is established then start communicating */
-    bzero(buffer,256);
-    n = read( newsockfd,buffer,255 );
-
-    if (n < 0) {
-        perror("ERROR reading from socket");
-        exit(1);
-    }
-
-    printf("Here is the message: %s\n",buffer);
-
-    /* Write a response to the client */
-    n = write(newsockfd,"I got your message",18);
-
-    if (n < 0) {
-        perror("ERROR writing to socket");
-        exit(1);
-    }
+    delete data;
+    pthread_exit(NULL);
 }
 
-OpenServerCommand::OpenServerCommand(int port, int rate) {
-    this->port=port;
-    this->rate=rate;
+
+void OpenServerCommand::doCommand() {
+    auto * thread = new pthread_t;
+    auto * data = new ThreadData();
+    data->setIntArg1(this->port);
+    data->setIntArg2(this->rate);
+
+    pthread_create(thread, NULL, OpenServer, data);
+
+    this->threads->addThread(thread);
+}
+
+OpenServerCommand::OpenServerCommand(vector<string> &code, map<string, VarData *> *symTbl, Threads *threads) {
+    Utils utils;
+    list<string> portList;
+    list<string> rateList;
+
+    int index = 1;
+    portList.push_back(code[index]);
+    index++;
+    while (code[index]=="+"||code[index]=="-"||code[index]=="*"||code[index]=="/"){//TODO is op
+        portList.push_back(code[index]);
+        index++;
+        portList.push_back(code[index]);
+        index++;
+    }
+
+    rateList.push_back(code[index]);
+    index++;
+    while (index<code.size() &&code[index]!=";"){
+        rateList.push_back(code[index]);
+        index++;
+        rateList.push_back(code[index]);
+        index++;
+    }
+
+    this->port= utils.evaluate(portList, symTbl)->calculate();
+    this->rate= utils.evaluate(rateList, symTbl)->calculate();
+    this->symTbl=symTbl;
+    this->threads=threads;
 }
