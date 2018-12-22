@@ -1,3 +1,7 @@
+#ifndef ORI_LEXER_THREADS_H
+#define ORI_LEXER_THREADS_H
+
+
 #include <thread>
 #include <sys/types.h>
 #include <vector>
@@ -11,3 +15,5 @@ public:
     void addThread(thread* t);
     ~Threads();
 };
+
+#endif
