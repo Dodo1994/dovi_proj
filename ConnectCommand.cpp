@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,17 +9,15 @@
 
 #include <string.h>
 #include <iostream>
+#include <thread>
 
 #include "ConnectCommand.h"
 #include "Utils.h"
-#include "ThreadData.h"
 
-static void* Connect(void *threadarg){
-
+void Connect(int port, char* ip){
     int sockfd, portno, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
-    ThreadData* data = (ThreadData*)threadarg;
     char buffer[256];
 
 //    if (argc < 3) {
@@ -46,7 +45,7 @@ static void* Connect(void *threadarg){
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
-    serv_addr.sin_port = htons(data->getIntArg1());
+    serv_addr.sin_port = htons(port);
 
     /* Now connect to the server */
     if (connect(sockfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
@@ -82,21 +81,10 @@ static void* Connect(void *threadarg){
     }
 
     printf("%s\n",buffer);
-
-    delete data;
-    pthread_exit(NULL);
 }
 
 void ConnectCommand::doCommand() {
-
-    auto * thread = new pthread_t;
-    auto * data = new ThreadData();
-    data->setIntArg1(this->port);
-    //data->setStrArg1(this->ip);
-
-    pthread_create(thread, NULL, Connect, data);
-
-    this->threads->addThread(thread);
+    this->threads->addThread(new thread(Connect, this->port, this->ip));
 }
 
 ConnectCommand::ConnectCommand(vector <string> &code, map<string, VarData *> *symTbl, Threads* threads) {

@@ -1,6 +1,4 @@
-//
-// Created by ori on 12/14/18.
-//
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -12,24 +10,19 @@
 
 #include <sys/socket.h>
 #include <iostream>
+#include "OpenServerCommand.h"
 #include "Utils.h"
 
 #include <iostream>
 #include <cstdlib>
-#include <thread>
+#include <pthread.h>
 
-#include "OpenServerCommand.h"
+#include "Server.h"
 
-
-using namespace std;
-
-void OpenServer(map<string, VarData*> *symTbl, int port, int rate) {
-
+Server::Server(int port, int rate) {
     int socket_desc, client_sock, c, read_size;
     struct sockaddr_in server, client;
     char client_message[20000];
-
-    cout << "port: " << port << ", rate: " << rate << "" << endl;
 
     //Create socket
     socket_desc = socket(AF_INET, SOCK_STREAM, 0);
@@ -71,7 +64,7 @@ void OpenServer(map<string, VarData*> *symTbl, int port, int rate) {
         usleep(rate);
         //Send the message back to client
         //write(client_sock , client_message , strlen(client_message));
-        //cout << numMsg++ << ": " << client_message << endl;
+        cout << numMsg++ << ": " << client_message << endl;
     }
 
     if (read_size == 0) {
@@ -80,39 +73,4 @@ void OpenServer(map<string, VarData*> *symTbl, int port, int rate) {
     } else if (read_size == -1) {
         perror("recv failed");
     }
-}
-
-
-void OpenServerCommand::doCommand() {
-    this->threads->addThread(new thread(OpenServer, this->symTbl, this->port, this->rate));
-}
-
-OpenServerCommand::OpenServerCommand(vector<string> &code, map<string, VarData *> *symTbl, Threads* threads) {
-    Utils utils;
-    list<string> portList;
-    list<string> rateList;
-
-    int index = 1;
-    portList.push_back(code[index]);
-    index++;
-    while (code[index]=="+"||code[index]=="-"||code[index]=="*"||code[index]=="/"){//TODO is op
-        portList.push_back(code[index]);
-        index++;
-        portList.push_back(code[index]);
-        index++;
-    }
-
-    rateList.push_back(code[index]);
-    index++;
-    while (index<code.size() &&code[index]!=";"){
-        rateList.push_back(code[index]);
-        index++;
-        rateList.push_back(code[index]);
-        index++;
-    }
-
-    this->port= utils.evaluate(portList, symTbl)->calculate();
-    this->rate= utils.evaluate(rateList, symTbl)->calculate();
-    this->symTbl=symTbl;
-    this->threads=threads;
 }

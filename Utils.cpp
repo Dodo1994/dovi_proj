@@ -1,3 +1,4 @@
+
 #include "Utils.h"
 #include "Number.h"
 #include "BinaryExpression.h"
@@ -13,6 +14,7 @@
 using namespace std;
 
 list<string> Utils::inFixToPreFix(list<string> inFix) {
+    inFix = this->minusToInt(inFix);
     list<string> preFix;
     stack<string> s;
     queue<string> q;
@@ -22,11 +24,13 @@ list<string> Utils::inFixToPreFix(list<string> inFix) {
 
     for (auto &it : inFix) {
         // numbers always to the queue
-        if (it != "+" && it != "-" && it != "*" && it != "/" && it != "<" && it != ">" && it != "(" && it != ")") {
+        if (it != "+" && it != "-" && it != "*" && it != "/" && it != "<"
+        && it != ">" && it != "<=" && it != ">=" && it != "==" && it != "!=" && it != "(" && it != ")") {
             q.push(it);
             // ( always to the stack
         } else if (it == "(") {
             s.push(it);
+            lastOp = it;
             // * / have priority so to the stack
         } else if (it == "*" || it == "/") {
             s.push(it);
@@ -36,7 +40,7 @@ list<string> Utils::inFixToPreFix(list<string> inFix) {
             s.push(it);
             lastOp = it;
             // no problem with priority so to the stack
-        } else if ((it == "<" || it == ">") && (lastOp != "*" && lastOp != "/" && lastOp != "+" && lastOp != "-")) {
+        } else if ((it == "<" || it == ">"|| it == "<="|| it == ">="|| it == "=="|| it == "!=") && (lastOp != "*" && lastOp != "/" && lastOp != "+" && lastOp != "-")) {
             s.push(it);
             lastOp = it;
             // problem with priority so move high priority to queue
@@ -46,12 +50,13 @@ list<string> Utils::inFixToPreFix(list<string> inFix) {
             s.push(it);
             lastOp = it;
             // problem with priority so move high priority to queue
-        } else if ((it == "<" || it == ">") && (lastOp == "*" || lastOp == "/" || lastOp == "+" || lastOp == "-")) {
+        } else if ((it == "<" || it == ">"|| it == "<="|| it == ">="|| it == "=="|| it == "!=")
+        && (lastOp == "*" || lastOp == "/" || lastOp == "+" || lastOp == "-")) {
             q.push(s.top());
             s.pop();
             s.push(it);
             lastOp = it;
-            // to the stack until (
+            // to the queue until (
         } else if (it == ")") {
             while (s.top() != "(") {
                 q.push(s.top());
@@ -96,13 +101,20 @@ Expression *Utils::preFixToExpression(list<string> preFix) {
     preFix.reverse();
 
     for (auto &it : preFix) {
-        if (it != "+" && it != "-" && it != "/" && it != "*" && it != ">" && it != "<") {
+        if (it != "+" && it != "-" && it != "/" && it != "*" && it != ">" && it != "<" && it != ">="
+            && it != "<=" && it != "==" && it != "!=") {
             stack.push(stoi(it));
         } else {
             double o1 = stack.top();
             stack.pop();
-            double o2 = stack.top();
-            stack.pop();
+            double o2;
+            // avoid empty stack case
+            if(!stack.empty()) {
+                o2 = stack.top();
+                stack.pop();
+            } else {
+                o2 = 0;
+            }
 
             if (it == "+") {
                 stack.push(o1 + o2);
@@ -117,13 +129,13 @@ Expression *Utils::preFixToExpression(list<string> preFix) {
             } else if (it == "<") {
                 stack.push(o2 < o1);
             } else if (it == ">=") {
-                stack.push(o1 * o2);
+                stack.push(o1 >= o2);
             } else if (it == "<=") {
-                stack.push(o2 > o1);
+                stack.push(o2 <= o1);
             } else if (it == "==") {
-                stack.push(o2 < o1);
+                stack.push(o2 == o1);
             } else if (it == "!=") {
-                stack.push(o2 < o1);
+                stack.push(o2 != o1);
             }
         }
     }
@@ -133,3 +145,27 @@ Expression *Utils::preFixToExpression(list<string> preFix) {
 Expression *Utils::evaluate(list<string> inFix, map<string, VarData *> *symTbl) {
     return this->preFixToExpression(this->placeValue(this->inFixToPreFix(inFix), symTbl));
 }
+
+list<string> Utils::minusToInt(list<string> l) {
+    auto it=l.begin();
+    if(*it=="-"){
+        if(it!=l.end()) {
+            (*it)="";
+            int negNum = -1 * stoi(*(++it));
+            (*it)=to_string(negNum);
+        }
+    }
+    for(it;it!=l.end();it++){
+        if(*it=="("||*it=="/"||*it=="*"||*it=="+"||*it=="-"||*it==">"||*it=="<"
+        ||*it==">="||*it=="<="||*it=="!="||*it=="=="){
+            if(*(++it)=="-"){
+                (*it)="";
+                int negNum = -1 * stoi(*(++it));
+                (*it)=to_string(negNum);
+            }
+        }
+    }
+    l.remove("");
+    return l;
+}
+

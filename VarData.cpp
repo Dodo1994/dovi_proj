@@ -1,3 +1,7 @@
+//
+// Created by ori on 12/16/18.
+//
+
 #include "VarData.h"
 
 double VarData::getValue() {

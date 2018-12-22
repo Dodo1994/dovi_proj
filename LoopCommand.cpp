@@ -1,4 +1,5 @@
 
+
 #include "LoopCommand.h"
 #include "CommandFactory.h"
 #include "Utils.h"
@@ -28,7 +29,7 @@ void LoopCommand::doCommand() {
     }
 }
 
-LoopCommand::LoopCommand(vector<string> &code, CommandFactory *factory, map<string, VarData *> *symTbl, map<string,string> *cmdMap) {
+LoopCommand::LoopCommand(vector<string> &code, CommandFactory *factory, map<string, VarData *> *symTbl, map<string,string> &cmdMap) {
     for (const auto &i : code) {
         this->code.push_back(i);
     }
@@ -37,3 +38,4 @@ LoopCommand::LoopCommand(vector<string> &code, CommandFactory *factory, map<stri
     this->cmdMap= cmdMap;
     this->expressions = new ExpsCollection;
 }
+

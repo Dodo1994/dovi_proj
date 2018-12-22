@@ -1,3 +1,11 @@
+//
+// Created by ori on 12/16/18.
+//
+
+#ifndef ORI_LEXER_CMDSCOLLECTION_H
+#define ORI_LEXER_CMDSCOLLECTION_H
+
+
 #include <list>
 #include "Command.h"
 
@@ -13,3 +21,6 @@ public:
     ~CmdsCollection();
     void doCommands();
 };
+
+
+#endif //ORI_LEXER_CMDSCOLLECTION_H

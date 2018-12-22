@@ -31,7 +31,7 @@ void IfCommand::doCommand() {
     }
 }
 
-IfCommand::IfCommand(vector<string> &code, CommandFactory *factory, map<string, VarData *> *symTbl, map<string,string> *cmdMap) {
+IfCommand::IfCommand(vector<string> &code, CommandFactory *factory, map<string, VarData *> *symTbl, map<string,string> &cmdMap) {
     for (const auto &i : code) {
         this->code.push_back(i);
     }

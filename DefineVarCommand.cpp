@@ -9,7 +9,7 @@ void DefineVarCommand::doCommand() {
     this->symTbl->insert(pair<string, VarData*>(this->name, new VarData(this->value, this->path)));
 }
 
-DefineVarCommand::DefineVarCommand(vector<string> code, map<string, VarData *> *symTbl) {
+DefineVarCommand::DefineVarCommand(vector<string> &code, map<string, VarData *> *symTbl) {
     this->symTbl = symTbl;
 
     /**
@@ -35,7 +35,7 @@ DefineVarCommand::DefineVarCommand(vector<string> code, map<string, VarData *> *
         // var x = y
         if(symTbl->count(code[3])) {
             this->value = this->symTbl->at(code[3])->getValue();
-            // var x = 5
+        // var x = 5
         } else {
             list<string> expList;
             expList.push_back(code[3]);

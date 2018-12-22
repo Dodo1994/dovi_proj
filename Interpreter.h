@@ -1,3 +1,7 @@
+
+#ifndef INTERPRETER_H
+#define INTERPRETER_H
+
 #include <string>
 #include <list>
 #include <map>
@@ -22,3 +26,6 @@ public:
     vector< string> lexer(string input);
     void parser(vector<string> input);
 };
+
+
+#endif

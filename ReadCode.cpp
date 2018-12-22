@@ -1,3 +1,5 @@
+
+
 #include <iostream>
 #include <cstring>
 #include <list>
@@ -15,7 +17,7 @@ void ReadCode::readFromFile(string fileName) {
     vector<string> v = interpreter.lexer(input);
 
     // lexer test
-    this->displayLexerResult(v);
+    //TODO this->displayLexerResult(v);
 
     // parser
     interpreter.parser(v);

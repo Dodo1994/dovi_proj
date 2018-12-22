@@ -1,3 +1,7 @@
+//
+// Created by ori on 12/19/18.
+//
+
 #include "BoolExpression.h"
 
 double BoolExpression::calculate() {

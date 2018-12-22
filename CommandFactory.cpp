@@ -1,3 +1,5 @@
+
+
 #include <iostream>
 #include "CommandFactory.h"
 #include "DefineVarCommand.h"
@@ -9,7 +11,7 @@
 #include "ConnectCommand.h"
 
 
-CommandFactory::CommandFactory(map<string, VarData *> *symTbl, map<string, string> *cmpMap, Threads* threads) {
+CommandFactory::CommandFactory(map<string, VarData *> *symTbl, map<string, string> &cmpMap, Threads* threads) {
     this->symTbl=symTbl;
     this->cmdMap=cmpMap;
     this->threads=threads;
@@ -37,3 +39,5 @@ Command *CommandFactory::createCommand(vector<string> &code) {
 
     return nullptr;
 }
+
+

@@ -8,20 +8,23 @@
 
 using namespace std;
 
-// test
 int main(int argc, char** argv) {
-    ReadCode readCode;
-    string input;
+    try {
+        ReadCode readCode;
 
-    // read from file
-    if(argc>1){
-        readCode.readFromFile(argv[1]);
-        // read from console
-    } else {
-        readCode.readFromConsole();
+        // read from file
+        if (argc > 1) {
+            readCode.readFromFile(argv[1]);
+            // read from console
+        } else {
+            readCode.readFromConsole();
+        }
+
+        cout << "that was the most wonderful simulator controller ever forever!!\nbye bye :)\n" << endl;
+
+    } catch (...) {
+        cout << "you should be more careful!!" << endl;
     }
-
-    cout<<"this is stupid line"<<endl;
 
     return 0;
 }

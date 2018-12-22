@@ -1,18 +1,24 @@
+//
+// Created by ori on 12/19/18.
+//
+
 #include "Parser.h"
 #include "CommandExpression.h"
 
 //TODO handle while within while count } to be like {
+//TODO empty line makes trouble
+
 
 void Parser::parse(vector<string> &code, ExpsCollection *expressions, CommandFactory *factory,
-                   map<string, string> *codeMap) {
+                   map<string, string> &codeMap) {
     int index = 0;
     if(code.size() > 0 && code[code.size()-1]!=";") {
         code.push_back(";");
     }
     vector<string> commandCode;
     while (index < code.size()) {
-        if ((*codeMap).count(code[index])) {
-            if ((*codeMap)[code[index]] == "command") {
+        if (codeMap.count(code[index])) {
+            if (codeMap[code[index]] == "command") {
                 commandCode.clear();
                 commandCode.push_back(code[index]);
                 index++;
@@ -35,7 +41,7 @@ void Parser::parse(vector<string> &code, ExpsCollection *expressions, CommandFac
                 expressions->addExpression(new CommandExpression(factory->createCommand(commandCode)));
             }
             // case command word is the second word ("=")
-        } else if (code.size()>1 && (*codeMap).count(code[index+1])) {
+        } else if (code.size()>1 && codeMap.count(code[index+1])) {
             commandCode.clear();
             commandCode.push_back(code[index]);
             index++;

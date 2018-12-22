@@ -1,3 +1,10 @@
+//
+// Created by ori on 12/17/18.
+//
+
+#ifndef ORI_LEXER_EXPSCOLLECTION_H
+#define ORI_LEXER_EXPSCOLLECTION_H
+
 
 #include "Expression.h"
 #include <list>
@@ -14,3 +21,6 @@ public:
     void executeAll();
     void deleteAll();
 };
+
+
+#endif //ORI_LEXER_EXPSCOLLECTION_H
