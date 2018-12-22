@@ -1,6 +1,4 @@
-
 #include "Threads.h"
-
 
 void Threads::addThread(thread *t) {
     this->threads.push_back(t);
