@@ -1,7 +1,7 @@
 
 
-#ifndef ORI_LEXER_EXPRESSION_H
-#define ORI_LEXER_EXPRESSION_H
+#ifndef EXPRESSION_H
+#define EXPRESSION_H
 
 
 class Expression {

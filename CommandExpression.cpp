@@ -8,3 +8,7 @@ double CommandExpression::calculate() {
 CommandExpression::CommandExpression(Command* command) {
     this->command = command;
 }
+
+CommandExpression::~CommandExpression() {
+    delete this->command;
+}

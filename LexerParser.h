@@ -1,7 +1,7 @@
 
 
-#ifndef ORI_LEXER_LEXERPARSER_H
-#define ORI_LEXER_LEXERPARSER_H
+#ifndef LEXERPARSER_H
+#define LEXERPARSER_H
 
 
 #include "CommandFactory.h"
@@ -20,4 +20,4 @@ public:
 };
 
 
-#endif //ORI_LEXER_LEXERPARSER_H
+#endif

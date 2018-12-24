@@ -21,26 +21,31 @@ void PrintCommand::doCommand() {
 }
 
 PrintCommand::PrintCommand(vector<string>& code, map<string, VarData *> *symTbl) {
+    int index = 1;
+    Utils utils;
     this->symTbl = symTbl;
-    auto it = code.begin();
-    it++;
-    for (it; it != code.end(); ++it) {
-        this->strings.push_back(*it);
+
+    // print strings until end
+    while (index < code.size() && code[index] != ";") {
+        this->strings.push_back(code[index]);
+        index++;
     }
 }
 
 void SleepCommand::doCommand() {
+    // sleep for x msc
     usleep(static_cast<__useconds_t>(this->sleepTime));
 }
 
 SleepCommand::SleepCommand(vector<string>& code, map<string, VarData *> *symTbl) {
+    int index = 1;
     Utils utils;
     list<string> sleepList;
 
-    //
-    auto it = ++code.begin();
-    for (it; it != code.end(); ++it) {
-        sleepList.push_back(*it);
+    // sleep expression until end
+    while (index < code.size() && code[index] != ";") {
+        sleepList.push_back(code[index]);
+        index++;
     }
     this->sleepTime = static_cast<int>(utils.evaluate(sleepList, symTbl));
 }

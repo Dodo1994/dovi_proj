@@ -25,8 +25,6 @@ list<string> Utils::infixToPrefix(list<string> infix) {
     queue<string> q;
     string lastOp;
 
-    // can extend to support also OR and AND TODO
-
     for (auto &it : infix) {
         // numbers always to the queue
         if (!this->isOperator(it) && it != "(" && it != ")") {
@@ -194,6 +192,3 @@ list<string> Utils::minusToInt(list<string> lst) {
     lst.remove("");
     return lst;
 }
-
-
-

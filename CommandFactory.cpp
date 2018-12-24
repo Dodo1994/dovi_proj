@@ -55,4 +55,3 @@ Command *CommandFactory::createCommand(vector<string> &code) {
     return nullptr;
 }
 
-

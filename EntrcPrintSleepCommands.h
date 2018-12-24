@@ -16,7 +16,6 @@ using namespace std;
 
 
 class EntrcCommand : public Command {
-
 public:
     void doCommand() override;
 };
@@ -35,6 +34,7 @@ public:
 
 class SleepCommand : public Command {
     int sleepTime;
+
 public:
     void doCommand() override;
 

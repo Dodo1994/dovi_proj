@@ -8,89 +8,89 @@ double Number::calculate() {
 }
 
 Number::Number(double value) {
-    this->value=value;
+    this->value = value;
 }
 
 double Plus::calculate() {
     return this->left->calculate() + this->right->calculate();
 }
 
-Plus::Plus(Expression* left, Expression* right) : BinaryExpression(left, right) {
+Plus::Plus(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }
 
 double Minus::calculate() {
     return this->left->calculate() - this->right->calculate();
 }
 
-Minus::Minus(Expression* left, Expression* right) : BinaryExpression(left, right) {
+Minus::Minus(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }
 
 double Mul::calculate() {
     return this->left->calculate() * this->right->calculate();
 }
 
-Mul::Mul(Expression* left, Expression* right) : BinaryExpression(left, right) {
+Mul::Mul(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }
 
 double Div::calculate() {
     return this->left->calculate() / this->right->calculate();
 }
 
-Div::Div(Expression* left, Expression* right) : BinaryExpression(left, right) {
+Div::Div(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }
 
 double Equal::calculate() {
     return this->left->calculate() == this->right->calculate();
 }
 
-Equal::Equal(Expression* left, Expression* right) : BinaryExpression(left, right) {
+Equal::Equal(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }
 
 double NotEqual::calculate() {
     return this->left->calculate() != this->right->calculate();
 }
 
-NotEqual::NotEqual(Expression* left, Expression* right) : BinaryExpression(left, right) {
+NotEqual::NotEqual(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }
 
 double Greater::calculate() {
     return this->left->calculate() > this->right->calculate();
 }
 
-Greater::Greater(Expression* left, Expression* right) : BinaryExpression(left, right) {
+Greater::Greater(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }
 
 double GreaterEqual::calculate() {
     return this->left->calculate() >= this->right->calculate();
 }
 
-GreaterEqual::GreaterEqual(Expression* left, Expression* right) : BinaryExpression(left, right) {
+GreaterEqual::GreaterEqual(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }
 
 double Smaller::calculate() {
     return this->left->calculate() < this->right->calculate();
 }
 
-Smaller::Smaller(Expression* left, Expression* right) : BinaryExpression(left, right) {
+Smaller::Smaller(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }
 
 double SmallerEqual::calculate() {
     return this->left->calculate() <= this->right->calculate();
 }
 
-SmallerEqual::SmallerEqual(Expression* left, Expression* right) : BinaryExpression(left, right) {
+SmallerEqual::SmallerEqual(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }
 
 double AND::calculate() {
     return this->left->calculate() && this->right->calculate();
 }
 
-AND::AND(Expression* left, Expression* right) : BinaryExpression(left, right) {
+AND::AND(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }
 
 double OR::calculate() {
     return this->left->calculate() || this->right->calculate();
 }
 
-OR::OR(Expression* left, Expression* right) : BinaryExpression(left, right) {
+OR::OR(Expression *left, Expression *right) : BinaryExpression(left, right) {
 }

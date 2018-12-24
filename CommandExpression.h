@@ -13,6 +13,8 @@ public:
     explicit CommandExpression(Command *command);
 
     double calculate() override;
+
+    ~CommandExpression();
 };
 
 
