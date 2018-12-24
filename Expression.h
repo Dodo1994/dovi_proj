@@ -9,7 +9,7 @@ class Expression {
 public:
     virtual double calculate()=0;
 
-    virtual ~Expression()=0;
+    virtual ~Expression()= default;
 };
 
 
