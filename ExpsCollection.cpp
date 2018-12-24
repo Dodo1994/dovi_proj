@@ -1,8 +1,5 @@
-//
-// Created by ori on 12/17/18.
-//
 
-#include <iostream>
+
 #include "ExpsCollection.h"
 
 ExpsCollection::~ExpsCollection() {

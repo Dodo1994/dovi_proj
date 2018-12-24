@@ -1,43 +1,42 @@
 
 
-#include <iostream>
-#include <cstring>
-#include <list>
-#include <fstream>
-#include <sstream>
 #include "ReadCode.h"
-#include "Interpreter.h"
 
 void ReadCode::readFromFile(string fileName) {
     Interpreter interpreter;
     ifstream infile;
+
+    // open file
     infile.open (fileName);
+
+    // put content in string
     string input(dynamic_cast<stringstream const&>(stringstream() << infile.rdbuf()).str());
+
+    // close file
     infile.close();
-    vector<string> v = interpreter.lexer(input);
 
-    // lexer test
-    //TODO this->displayLexerResult(v);
-
-    // parser
-    interpreter.parser(v);
+    // use lexer and interpreter
+    interpreter.parser(interpreter.lexer(input));
 }
 
 void ReadCode::readFromConsole() {
     Interpreter interpreter;
-    cout<<"type your code (to finish type 'quit')"<<endl;
-
+    string input;
     string line;
-    while (true){
-        line="";
-        getline(cin,line);
-        if(line=="quit"){ break;}
-        interpreter.parser(interpreter.lexer(line));
-    }
-}
 
-void ReadCode::displayLexerResult(vector<string> v) {
-    // test lexer result
-    for (auto &it : v)
-        cout << it << "\n";
+    cout << "type your code (to finish type 'exit')" << endl;
+
+    while (true) {
+        // get line each time
+        getline(cin, line);
+
+        // read until type 'quit'
+        if (line == "exit") { break; }
+
+        // add '\n' after each line
+        input += line + "\n";
+    }
+
+    // use lexer and interpreter
+    interpreter.parser(interpreter.lexer(input));
 }

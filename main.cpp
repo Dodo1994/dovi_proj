@@ -12,19 +12,18 @@ int main(int argc, char** argv) {
     try {
         ReadCode readCode;
 
-        // read from file
+        // if there is arg, read from file
         if (argc > 1) {
             readCode.readFromFile(argv[1]);
-            // read from console
+            // else, read from console
         } else {
             readCode.readFromConsole();
         }
 
-        cout << "that was the most wonderful simulator controller ever forever!!\nbye bye :)\n" << endl;
+        cout << "\nthat was the most wonderful simulator controller ever forever!!\nbye bye :)\n" << endl;
 
     } catch (...) {
-        cout << "you should be more careful!!" << endl;
+        cout << "\nyou should be more careful!!" << endl;
     }
-
     return 0;
 }

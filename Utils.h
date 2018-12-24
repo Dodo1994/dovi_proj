@@ -1,29 +1,41 @@
-//
-// Created by ori on 12/17/18.
-//
-
-#ifndef ORI_LEXER_UTILS_H
-#define ORI_LEXER_UTILS_H
 
 
-#include "Expression.h"
+#ifndef UTILS_H
+#define UTILS_H
+
 #include <string>
 #include <map>
 #include <list>
 #include <vector>
+#include <stack>
+#include <queue>
+#include <iostream>
+#include <utility>
+
 #include "VarData.h"
+#include "Expression.h"
+#include "BinaryExpression.h"
+#include "MathExpressions.h"
+
 
 using namespace std;
 
 class Utils {
 public:
-    list<string> inFixToPreFix(list<string> inFix);
-    list<string> placeValue(list<string> l, map<string, VarData*> *symTbl);
-    Expression* preFixToExpression(list<string> preFix);
-    Expression* evaluate(list<string> inFix, map<string, VarData *> *symTbl);
+    bool isOperator(string str);
 
-    list<string> minusToInt(list<string> l);
+    string removeApostrophes(string str);
+
+    list<string> minusToInt(list<string> lst);
+
+    list<string> infixToPrefix(list<string> infix);
+
+    list<string> placeValue(list<string> lst, map<string, VarData *> *symTbl);
+
+    double prefixToDouble(list<string> prefix);
+
+    double evaluate(list<string> &infix, map<string, VarData *> *symTbl);
 };
 
 
-#endif //ORI_LEXER_UTILS_H
+#endif

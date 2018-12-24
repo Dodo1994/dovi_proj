@@ -1,31 +1,35 @@
 
+
 #include "Utils.h"
-#include "Number.h"
-#include "BinaryExpression.h"
-#include "Plus.h"
-#include "Minus.h"
-#include "Mul.h"
-#include "Div.h"
-#include <stack>
-#include <queue>
-#include <iostream>
-#include <string.h>
 
-using namespace std;
+bool Utils::isOperator(string str) {
+    return (str == "+" || str == "-" || str == "*" || str == "/" || str == ">" || str == "<"
+    || str == ">=" || str == "<=" || str == "!=" || str == "==" || str == "OR" || str == "AND");
+}
 
-list<string> Utils::inFixToPreFix(list<string> inFix) {
-    inFix = this->minusToInt(inFix);
-    list<string> preFix;
+string Utils::removeApostrophes(string str) {
+    string newStr;
+    // copy all chars to new str without first and last
+    for (int i = 1; i < str.size() - 1; ++i) {
+        newStr += str[i];
+    }
+    return newStr;
+}
+
+list<string> Utils::infixToPrefix(list<string> infix) {
+    // pre process
+    infix = this->minusToInt(infix);
+
+    list<string> prefix;
     stack<string> s;
     queue<string> q;
     string lastOp;
 
     // can extend to support also OR and AND TODO
 
-    for (auto &it : inFix) {
+    for (auto &it : infix) {
         // numbers always to the queue
-        if (it != "+" && it != "-" && it != "*" && it != "/" && it != "<"
-        && it != ">" && it != "<=" && it != ">=" && it != "==" && it != "!=" && it != "(" && it != ")") {
+        if (!this->isOperator(it) && it != "(" && it != ")") {
             q.push(it);
             // ( always to the stack
         } else if (it == "(") {
@@ -40,7 +44,14 @@ list<string> Utils::inFixToPreFix(list<string> inFix) {
             s.push(it);
             lastOp = it;
             // no problem with priority so to the stack
-        } else if ((it == "<" || it == ">"|| it == "<="|| it == ">="|| it == "=="|| it == "!=") && (lastOp != "*" && lastOp != "/" && lastOp != "+" && lastOp != "-")) {
+        } else if ((it == "<" || it == ">" || it == "<=" || it == ">=" || it == "==" || it == "!=")
+                   && (lastOp != "*" && lastOp != "/" && lastOp != "+" && lastOp != "-")) {
+            s.push(it);
+            lastOp = it;
+            // no problem with priority so to the stack
+        } else if ((it == "OR" || it == "AND") && (lastOp != "*" && lastOp != "/" && lastOp != "+"
+                                                   && lastOp != "-" && it != "<" && it != ">" && it != "<=" &&
+                                                   it != ">=" && it != "==" && it != "!=")) {
             s.push(it);
             lastOp = it;
             // problem with priority so move high priority to queue
@@ -50,8 +61,16 @@ list<string> Utils::inFixToPreFix(list<string> inFix) {
             s.push(it);
             lastOp = it;
             // problem with priority so move high priority to queue
-        } else if ((it == "<" || it == ">"|| it == "<="|| it == ">="|| it == "=="|| it == "!=")
-        && (lastOp == "*" || lastOp == "/" || lastOp == "+" || lastOp == "-")) {
+        } else if ((it == "<" || it == ">" || it == "<=" || it == ">=" || it == "==" || it == "!=")
+                   && (lastOp == "*" || lastOp == "/" || lastOp == "+" || lastOp == "-")) {
+            q.push(s.top());
+            s.pop();
+            s.push(it);
+            lastOp = it;
+            // problem with priority so move high priority to queue
+        } else if ((it == "OR" || it == "AND") && (lastOp == "*" || lastOp == "/" || lastOp == "+" || lastOp == "-"
+                                                   || it == "<" || it == ">" || it == "<=" || it == ">=" ||
+                                                   it == "==" || it == "!=")) {
             q.push(s.top());
             s.pop();
             s.push(it);
@@ -77,16 +96,17 @@ list<string> Utils::inFixToPreFix(list<string> inFix) {
     }
     // move from queue to list
     while (!q.empty()) {
-        preFix.push_front(q.front());
+        prefix.push_front(q.front());
         q.pop();
     }
-    return preFix;
+    return prefix;
 }
 
-list<string> Utils::placeValue(list<string> l, map<string, VarData *> *symTbl) {
+list<string> Utils::placeValue(list<string> lst, map<string, VarData *> *symTbl) {
     list<string> retList;
-    for (auto &it : l) {
-        if(symTbl->count(it)){
+    for (auto &it : lst) {
+        // if the str is var, place it's value
+        if (symTbl->count(it)) {
             retList.push_back(to_string(symTbl->at(it)->getValue()));
         } else {
             retList.push_back(it);
@@ -95,77 +115,85 @@ list<string> Utils::placeValue(list<string> l, map<string, VarData *> *symTbl) {
     return retList;
 }
 
+double Utils::prefixToDouble(list<string> prefix) {
+    stack<Expression *> stack;
+    prefix.reverse();
 
-Expression *Utils::preFixToExpression(list<string> preFix) {
-    stack<double> stack;
-    preFix.reverse();
-
-    for (auto &it : preFix) {
-        if (it != "+" && it != "-" && it != "/" && it != "*" && it != ">" && it != "<" && it != ">="
-            && it != "<=" && it != "==" && it != "!=") {
-            stack.push(stoi(it));
+    for (auto &it : prefix) {
+        if (!this->isOperator(it)) {
+            stack.push(new Number(stoi(it)));
         } else {
-            double o1 = stack.top();
+            Expression *o1 = stack.top();
             stack.pop();
-            double o2;
+            Expression *o2;
             // avoid empty stack case
-            if(!stack.empty()) {
+            if (!stack.empty()) {
                 o2 = stack.top();
                 stack.pop();
             } else {
-                o2 = 0;
+                o2 = new Number(0);
             }
 
             if (it == "+") {
-                stack.push(o1 + o2);
+                stack.push(new Plus(o2, o1));
             } else if (it == "-") {
-                stack.push(o2 - o1);
+                stack.push(new Minus(o2, o1));
             } else if (it == "/") {
-                stack.push(o2 / o1);
+                stack.push(new Div(o2, o1));
             } else if (it == "*") {
-                stack.push(o1 * o2);
+                stack.push(new Mul(o2, o1));
             } else if (it == ">") {
-                stack.push(o2 > o1);
+                stack.push(new Greater(o2, o1));
             } else if (it == "<") {
-                stack.push(o2 < o1);
+                stack.push(new Smaller(o2, o1));
             } else if (it == ">=") {
-                stack.push(o1 >= o2);
+                stack.push(new GreaterEqual(o2, o1));
             } else if (it == "<=") {
-                stack.push(o2 <= o1);
+                stack.push(new SmallerEqual(o2, o1));
             } else if (it == "==") {
-                stack.push(o2 == o1);
+                stack.push(new Equal(o2, o1));
             } else if (it == "!=") {
-                stack.push(o2 != o1);
+                stack.push(new NotEqual(o2, o1));
+            } else if (it == "OR") {
+                stack.push(new OR(o2, o1));
+            } else if (it == "AND") {
+                stack.push(new AND(o2, o1));
             }
         }
     }
-    return new Number(stack.top());
+    double result = stack.top()->calculate();
+    // free all the expressions in the tree
+    delete stack.top();
+    return result;
 }
 
-Expression *Utils::evaluate(list<string> inFix, map<string, VarData *> *symTbl) {
-    return this->preFixToExpression(this->placeValue(this->inFixToPreFix(inFix), symTbl));
+double Utils::evaluate(list<string> &infix, map<string, VarData *> *symTbl) {
+    return this->prefixToDouble(this->infixToPrefix(this->placeValue(infix, symTbl)));
 }
 
-list<string> Utils::minusToInt(list<string> l) {
-    auto it=l.begin();
-    if(*it=="-"){
-        if(it!=l.end()) {
-            (*it)="";
+list<string> Utils::minusToInt(list<string> lst) {
+    auto it = lst.begin();
+    // if first is -
+    if (*it == "-") {
+        if (it != lst.end()) {
+            (*it) = "";
             int negNum = -1 * stoi(*(++it));
-            (*it)=to_string(negNum);
+            (*it) = to_string(negNum);
         }
     }
-    for(it;it!=l.end();it++){
-        if(*it=="("||*it=="/"||*it=="*"||*it=="+"||*it=="-"||*it==">"||*it=="<"
-        ||*it==">="||*it=="<="||*it=="!="||*it=="=="){
-            if(*(++it)=="-"){
-                (*it)="";
+    // if - after operator or (
+    for (it; it != lst.end(); it++) {
+        if (*it == "(" || this->isOperator(*it)) {
+            if (*(++it) == "-") {
+                (*it) = "";
                 int negNum = -1 * stoi(*(++it));
-                (*it)=to_string(negNum);
+                (*it) = to_string(negNum);
             }
         }
     }
-    l.remove("");
-    return l;
+    lst.remove("");
+    return lst;
 }
+
+
 

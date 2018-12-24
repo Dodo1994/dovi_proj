@@ -1,17 +1,14 @@
-//
-// Created by ori on 12/14/18.
-//
+
 
 #include "BinaryExpression.h"
 
-void BinaryExpression::setRight(Expression *right) {
-    this->right=right;
+
+BinaryExpression::BinaryExpression(Expression* left, Expression* right) {
+    this->left = left;
+    this->right = right;
 }
 
-void BinaryExpression::setLeft(Expression *left) {
-    this->left=left;
-}
-
-double BinaryExpression::calculate() {
-    return 0;
+BinaryExpression::~BinaryExpression() {
+    delete this->right;
+    delete this->left;
 }

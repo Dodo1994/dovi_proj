@@ -1,22 +1,22 @@
-//
-// Created by ori on 12/14/18.
-//
 
-#ifndef ORI_LEXER_BINARYEXPRESSION_H
-#define ORI_LEXER_BINARYEXPRESSION_H
+
+#ifndef BINARYEXPRESSION_H
+#define BINARYEXPRESSION_H
 
 #include "Expression.h"
 
-class BinaryExpression :public Expression{
+class BinaryExpression :public Expression {
 protected:
-    Expression* right;
-    Expression* left;
+    Expression *right;
+    Expression *left;
 
 public:
-    void setRight(Expression* right);
-    void setLeft(Expression* left);
-    virtual double calculate();
+    BinaryExpression(Expression *left, Expression *right);
+
+    virtual double calculate() = 0;
+
+    ~BinaryExpression();
 };
 
 
-#endif //ORI_LEXER_BINARYEXPRESSION_H
+#endif

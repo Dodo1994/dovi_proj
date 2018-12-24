@@ -1,26 +1,28 @@
-//
-// Created by ori on 12/17/18.
-//
-
-#ifndef ORI_LEXER_EXPSCOLLECTION_H
-#define ORI_LEXER_EXPSCOLLECTION_H
 
 
-#include "Expression.h"
+#ifndef EXPSCOLLECTION_H
+#define EXPSCOLLECTION_H
+
+#include <iostream>
 #include <list>
+#include "Expression.h"
 
 using namespace std;
 
 class ExpsCollection {
-    list<Expression*> expressions;
+    list<Expression *> expressions;
 
 public:
     ExpsCollection();
+
     ~ExpsCollection();
-    void addExpression(Expression* expression);
+
+    void addExpression(Expression *expression);
+
     void executeAll();
+
     void deleteAll();
 };
 
 
-#endif //ORI_LEXER_EXPSCOLLECTION_H
+#endif

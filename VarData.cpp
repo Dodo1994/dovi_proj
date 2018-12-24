@@ -1,6 +1,4 @@
-//
-// Created by ori on 12/16/18.
-//
+
 
 #include "VarData.h"
 
@@ -14,13 +12,14 @@ string VarData::getPath() {
 
 void VarData::setValue(double newValue) {
     this->value = newValue;
+
 }
 
 void VarData::setPath(string newPath) {
-    this->path = newPath;
+    this->path = move(newPath);
 }
 
 VarData::VarData(double value, string path) {
-    this->value=value;
-    this->path=path;
+    this->value = value;
+    this->path = move(path);
 }

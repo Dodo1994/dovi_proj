@@ -1,20 +1,14 @@
-//
-// Created by ori on 12/14/18.
-//
 
-#ifndef ORI_LEXER_CONDITIONCOMMAND_H
-#define ORI_LEXER_CONDITIONCOMMAND_H
 
-#include <list>
+#ifndef CONDITIONCOMMAND_H
+#define CONDITIONCOMMAND_H
+
 #include "Command.h"
-#include "CommandFactory.h"
 
-class ConditionCommand : public Command{
+class ConditionCommand : public Command {
 
 public:
-    ConditionCommand();
-    void doCommand() override = 0;
+    virtual void doCommand() override = 0;
 };
 
-
-#endif //ORI_LEXER_CONDITIONCOMMAND_H
+#endif
