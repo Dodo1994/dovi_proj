@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
-project(FlightGearProj)
+project(ori_lexer)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(FlightGearProj main.cpp Interpreter.cpp Interpreter.h Command.cpp Command.h DefineVarCommand.cpp DefineVarCommand.h ConditionCommand.cpp ConditionCommand.h ConnectCommand.cpp ConnectCommand.h LoopCommand.cpp LoopCommand.h IfCommand.cpp IfCommand.h OpenServerCommand.cpp OpenServerCommand.h Expression.cpp Expression.h BinaryExpression.cpp BinaryExpression.h Number.cpp Number.h Plus.cpp Plus.h Minus.cpp Minus.h Div.cpp Div.h Mul.cpp Mul.h CommandExpression.cpp CommandExpression.h VarData.cpp VarData.h CommandFactory.cpp CommandFactory.h CmdsCollection.cpp CmdsCollection.h PrintCommand.cpp PrintCommand.h PlacementCommand.cpp PlacementCommand.h Utils.cpp Utils.h ExpsCollection.cpp ExpsCollection.h ReadCode.cpp ReadCode.h BoolExpression.cpp BoolExpression.h Parser.cpp Parser.h Threads.cpp Threads.h)
+add_executable(ori_lexer main.cpp Interpreter.cpp Interpreter.h Command.cpp Command.h DefineVarCommand.cpp DefineVarCommand.h ConditionCommand.cpp ConditionCommand.h ConnectCommand.cpp ConnectCommand.h LoopCommand.cpp LoopCommand.h IfCommand.cpp IfCommand.h OpenServerCommand.cpp OpenServerCommand.h Expression.cpp Expression.h BinaryExpression.cpp BinaryExpression.h Number.cpp Number.h Plus.cpp Plus.h Minus.cpp Minus.h Div.cpp Div.h Mul.cpp Mul.h CommandExpression.cpp CommandExpression.h VarData.cpp VarData.h CommandFactory.cpp CommandFactory.h CmdsCollection.cpp CmdsCollection.h PrintCommand.cpp PrintCommand.h PlacementCommand.cpp PlacementCommand.h Utils.cpp Utils.h ExpsCollection.cpp ExpsCollection.h ReadCode.cpp ReadCode.h BoolExpression.cpp BoolExpression.h Parser.cpp Parser.h Server.cpp Server.h Client.cpp Client.h ThreadData.cpp ThreadData.h Threads.cpp Threads.h)
 SET(CMAKE_CXX_FLAGS -pthread)

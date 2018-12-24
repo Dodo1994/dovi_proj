@@ -1,3 +1,4 @@
+
 #include "Utils.h"
 #include "Number.h"
 #include "BinaryExpression.h"
@@ -24,7 +25,7 @@ list<string> Utils::inFixToPreFix(list<string> inFix) {
     for (auto &it : inFix) {
         // numbers always to the queue
         if (it != "+" && it != "-" && it != "*" && it != "/" && it != "<"
-            && it != ">" && it != "<=" && it != ">=" && it != "==" && it != "!=" && it != "(" && it != ")") {
+        && it != ">" && it != "<=" && it != ">=" && it != "==" && it != "!=" && it != "(" && it != ")") {
             q.push(it);
             // ( always to the stack
         } else if (it == "(") {
@@ -50,7 +51,7 @@ list<string> Utils::inFixToPreFix(list<string> inFix) {
             lastOp = it;
             // problem with priority so move high priority to queue
         } else if ((it == "<" || it == ">"|| it == "<="|| it == ">="|| it == "=="|| it == "!=")
-                   && (lastOp == "*" || lastOp == "/" || lastOp == "+" || lastOp == "-")) {
+        && (lastOp == "*" || lastOp == "/" || lastOp == "+" || lastOp == "-")) {
             q.push(s.top());
             s.pop();
             s.push(it);
@@ -108,7 +109,7 @@ Expression *Utils::preFixToExpression(list<string> preFix) {
             stack.pop();
             double o2;
             // avoid empty stack case
-            if (!stack.empty()) {
+            if(!stack.empty()) {
                 o2 = stack.top();
                 stack.pop();
             } else {
@@ -156,7 +157,7 @@ list<string> Utils::minusToInt(list<string> l) {
     }
     for(it;it!=l.end();it++){
         if(*it=="("||*it=="/"||*it=="*"||*it=="+"||*it=="-"||*it==">"||*it=="<"
-           ||*it==">="||*it=="<="||*it=="!="||*it=="=="){
+        ||*it==">="||*it=="<="||*it=="!="||*it=="=="){
             if(*(++it)=="-"){
                 (*it)="";
                 int negNum = -1 * stoi(*(++it));
@@ -167,3 +168,4 @@ list<string> Utils::minusToInt(list<string> l) {
     l.remove("");
     return l;
 }
+
