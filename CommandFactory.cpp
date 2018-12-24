@@ -6,6 +6,7 @@
 #include "EntrcPrintSleepCommands.h"
 
 CommandFactory::CommandFactory(map<string, VarData *> *symTbl, map<string, string> &cmpMap, Threads* threads) {
+    // init members
     this->symTbl = symTbl;
     this->cmdMap = cmpMap;
     this->threads = threads;

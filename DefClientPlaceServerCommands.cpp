@@ -5,6 +5,7 @@
 bool isClientSend = false;
 string clientPath;
 int clientValue;
+mutex mtx;
 
 void Connect(int port, char* ip){
     int sockfd, n;
@@ -42,8 +43,6 @@ void Connect(int port, char* ip){
 
     while (true) {
         if(isClientSend) {
-            //TODO
-            cout<<"ALIVE!!!"<<endl;
             bzero(buffer, 256);
             string msg;
             // syntax: "set /instrumentation/attitude-indicator/internal-pitch-deg 10000\r\n"
@@ -164,19 +163,18 @@ void OpenServer(map<string, VarData*> *symTbl, int port, int rate) {
 
     //Receive a message from client
     while ((read_size = recv(client_sock, client_message, 20000, 0)) > 0) {
-        string segment;
-        vector<string> seglist;
+        string msg;
+        vector<string> msgArr;
         for (char c:client_message) {
             if ((c != ',') && (c != '\n')) {
-                segment += c;
+                msg += c;
             } else {
-                seglist.push_back(segment);
-                segment = "";
+                msgArr.push_back(msg);
+                msg = "";
             }
         }
         for (int i = 0; i < names.size(); ++i) {
-            cout<<seglist[i]<<endl;//TODO
-            updateVars(names[i], stod(seglist[i]), symTbl);
+            updateVars(names[i], stod(msgArr[i]), symTbl);
         }
     }
 
@@ -209,9 +207,10 @@ OpenServerCommand::OpenServerCommand(vector<string> &code, map<string, VarData *
     // rate expression until end
     while (index < code.size() && code[index] != ";") {
         rateList.push_back(code[index]);
-        index++;
+        ++index;
     }
 
+    // init members
     this->port = static_cast<int>(utils.evaluate(portList, symTbl));
     this->rate = static_cast<int>(utils.evaluate(rateList, symTbl));
     this->symTbl = symTbl;
@@ -221,6 +220,9 @@ OpenServerCommand::OpenServerCommand(vector<string> &code, map<string, VarData *
 void DefineVarCommand::doCommand() {}
 
 DefineVarCommand::DefineVarCommand(vector<string> &code, map<string, VarData *> *symTbl) {
+    // mutex
+    mtx.lock();
+
     Utils utils;
     string path;
     double value;
@@ -251,11 +253,12 @@ DefineVarCommand::DefineVarCommand(vector<string> &code, map<string, VarData *> 
             int index = 4;
             while (index < code.size() && code[index] != ";") {
                 expList.push_back(code[index]);
-                index++;
+                ++index;
             }
             value = utils.evaluate(expList, symTbl);
         }
     }
+
     // insert to symTbl the name, value and path
     symTbl->insert(pair<string, VarData *>(name, new VarData(value, path)));
 
@@ -263,9 +266,15 @@ DefineVarCommand::DefineVarCommand(vector<string> &code, map<string, VarData *> 
     clientPath = path;
     clientValue = static_cast<int>(value);
     isClientSend = true;
+
+    // mutex
+    mtx.unlock();
 }
 
 void PlacementCommand::doCommand() {
+    // mutex
+    mtx.lock();
+
     Utils utils;
     double value = utils.evaluate(this->right,this->symTbl);
     this->symTbl->at(this->left)->setValue(value);
@@ -274,6 +283,9 @@ void PlacementCommand::doCommand() {
     clientPath = this->symTbl->at(this->left)->getPath();
     clientValue = static_cast<int>(value);
     isClientSend = true;
+
+    // mutex
+    mtx.unlock();
 }
 
 PlacementCommand::PlacementCommand(vector<string> &code, map<string, VarData *> *symTbl) {
@@ -292,5 +304,3 @@ PlacementCommand::PlacementCommand(vector<string> &code, map<string, VarData *> 
     // init symTbl
     this->symTbl = symTbl;
 }
-
-

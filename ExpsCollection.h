@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <list>
+#include <typeinfo>
 #include "Expression.h"
 
 using namespace std;

@@ -6,7 +6,6 @@
 #include <map>
 #include <list>
 #include <iostream>
-
 #include "VarData.h"
 #include "ExpsCollection.h"
 #include "Threads.h"
