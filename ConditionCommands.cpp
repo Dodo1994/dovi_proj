@@ -9,15 +9,19 @@ void IfCommand::doCommand() {
     list<string> condition;
     vector<string> blockCode;
 
+    // condition until {
     while (this->code[index] != "{") {
         condition.push_back(this->code[index]);
-        index++;
+        ++index;
     }
+
+    // block code until the end
     index += 2;
     for (index; index < this->code.size(); ++index) {
         blockCode.push_back(this->code[index]);
     }
 
+    // execute expressions in block-code while condition is true
     if (utils.evaluate(condition, this->symTbl)) {
         parser.parse(blockCode, this->expressions, this->factory, this->cmdMap);
         this->expressions->executeAll();
@@ -25,13 +29,14 @@ void IfCommand::doCommand() {
 }
 
 IfCommand::IfCommand(vector<string> &code, CommandFactory *factory, map<string, VarData *> *symTbl, map<string,string> &cmdMap) {
+    // init members
     for (const auto &i : code) {
         this->code.push_back(i);
     }
-    this->factory=factory;
-    this->symTbl=symTbl;
-    this->cmdMap= cmdMap;
-    this->expressions=new ExpsCollection;
+    this->factory = factory;
+    this->symTbl = symTbl;
+    this->cmdMap = cmdMap;
+    this->expressions = new ExpsCollection;
 }
 
 IfCommand::~IfCommand() {
@@ -46,15 +51,19 @@ void LoopCommand::doCommand() {
     list<string> condition;
     vector<string> blockCode;
 
+    // condition until {
     while (this->code[index] != "{") {
         condition.push_back(this->code[index]);
-        index++;
+        ++index;
     }
+
+    // block code until the end
     index += 2;
     for (index; index < this->code.size(); ++index) {
         blockCode.push_back(this->code[index]);
     }
 
+    // execute expressions in block-code while condition is true
     while (utils.evaluate(condition, this->symTbl)) {
         this->expressions->deleteAll();
         parser.parse(blockCode, this->expressions, this->factory, this->cmdMap);
@@ -63,11 +72,12 @@ void LoopCommand::doCommand() {
 }
 
 LoopCommand::LoopCommand(vector<string> &code, CommandFactory *factory, map<string, VarData *> *symTbl, map<string,string> &cmdMap) {
+    // init members
     for (const auto &i : code) {
         this->code.push_back(i);
     }
-    this->factory=factory;
-    this->symTbl=symTbl;
-    this->cmdMap= cmdMap;
+    this->factory = factory;
+    this->symTbl = symTbl;
+    this->cmdMap = cmdMap;
     this->expressions = new ExpsCollection;
 }

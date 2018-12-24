@@ -222,29 +222,31 @@ void DefineVarCommand::doCommand() {}
 
 DefineVarCommand::DefineVarCommand(vector<string> &code, map<string, VarData *> *symTbl) {
     Utils utils;
-
-    string name = code[1];
     string path;
     double value;
+    // name is second word
+    string name = code[1];
 
     if (code[3] == "bind") {
-        // var x = bind "bla"
+        // case var x = bind "/bla/bla"
         if (code[4][0] == '"') {
             path = utils.removeApostrophes(code[4]);
             value = 0;
-            // var x = bind y
+            // case var x = bind y
         } else {
             path = symTbl->at(code[4])->getPath();
             value = symTbl->at(code[4])->getValue();
         }
     } else {
+        // '/' because not bind
         path = "/";
-        // var x = y
+        // case var x = y
         if (symTbl->count(code[3])) {
             value = symTbl->at(code[3])->getValue();
-            // var x = 5
+            // case var x = 5
         } else {
             list<string> expList;
+            // expression is after =
             expList.push_back(code[3]);
             int index = 4;
             while (index < code.size() && code[index] != ";") {
@@ -254,6 +256,7 @@ DefineVarCommand::DefineVarCommand(vector<string> &code, map<string, VarData *> 
             value = utils.evaluate(expList, symTbl);
         }
     }
+    // insert to symTbl the name, value and path
     symTbl->insert(pair<string, VarData *>(name, new VarData(value, path)));
 
     // client details
@@ -275,13 +278,19 @@ void PlacementCommand::doCommand() {
 
 PlacementCommand::PlacementCommand(vector<string> &code, map<string, VarData *> *symTbl) {
     int index = 1;
-    this->symTbl = symTbl;
+
+    // left is before =
     this->left = code[index - 1];
+
+    // right expression is after =
     ++index;
     while (index < code.size()) {
         this->right.push_back(code[index]);
         ++index;
     }
+
+    // init symTbl
+    this->symTbl = symTbl;
 }
 
 
