@@ -8,6 +8,7 @@
 
 using namespace std;
 
+
 int main(int argc, char** argv) {
     try {
         ReadCode readCode;
@@ -19,11 +20,11 @@ int main(int argc, char** argv) {
         } else {
             readCode.readFromConsole();
         }
-
-        cout << "\nthat was the most wonderful simulator controller ever forever!!\nbye bye :)\n" << endl;
+        cout << "\nbye bye :)\n" << endl;
 
     } catch (...) {
-        cout << "\nyou should be more careful!!" << endl;
+        cout << "\nbe careful!!\n" << endl;
     }
+
     return 0;
 }

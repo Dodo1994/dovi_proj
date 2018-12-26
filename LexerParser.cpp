@@ -9,6 +9,11 @@ vector<string> Lexer::lexer(string input) {
     bool isPath = false;
     vector<string> words;
 
+    // pass blanks at the beginning
+    while (i < input.size() && input[i] == ' ' || input[i] == '\t' || input[i] == '\n') {
+        ++i;
+    }
+
     // pass over input
     while (i < input.size()) {
         // case " set flag that -,/ etc. aren't operators
@@ -25,7 +30,7 @@ vector<string> Lexer::lexer(string input) {
             isFirstBlank = true;
             isPath = false;
             // operators
-        } else if (input[i] == '+' || input[i] == '*' || input[i] == '(' || input[i] == ')') {
+        } else if (input[i] == '+' || input[i] == '*' || input[i] == '(' || input[i] == ')' || input[i] == ',') {
             if (word != "") {
                 words.push_back(word);
                 word = "";
@@ -90,6 +95,13 @@ vector<string> Lexer::lexer(string input) {
     if(word!="") {
         words.push_back(word);
     }
+    // remove double ";"
+    for (int j = 1; j < words.size(); ++j) {
+        if (words[j - 1] == ";" && words[j] == ";") {
+            words[j - 1] = "";
+        }
+    }
+
     return words;
 }
 
@@ -101,6 +113,10 @@ void Parser::parse(vector<string> &code, ExpsCollection *expressions, CommandFac
     }
     vector<string> commandCode;
     while (index < code.size()) {
+        // skip empty string
+        if (code[index] == "" && index < code.size() - 1) {
+            ++index;
+        }
         if (codeMap.count(code[index])) {
             if (codeMap[code[index]] == "command") {
                 commandCode.clear();
@@ -109,6 +125,10 @@ void Parser::parse(vector<string> &code, ExpsCollection *expressions, CommandFac
                 while (index < code.size() && code[index] != ";") {
                     commandCode.push_back(code[index]);
                     index++;
+                    // skip empty string
+                    if (code[index] == "" && index < code.size() - 1) {
+                        ++index;
+                    }
                 }
                 index++;
                 expressions->addExpression(new CommandExpression(factory->createCommand(commandCode)));
@@ -120,18 +140,26 @@ void Parser::parse(vector<string> &code, ExpsCollection *expressions, CommandFac
                 while (index < code.size() && code[index] != "}") {
                     commandCode.push_back(code[index]);
                     index++;
+                    // skip empty string
+                    if (code[index] == "" && index < code.size() - 1) {
+                        ++index;
+                    }
                 }
                 index += 2;
                 expressions->addExpression(new CommandExpression(factory->createCommand(commandCode)));
             }
             // case command word is the second word ("=")
-        } else if (code.size()>1 && codeMap.count(code[index+1])) {
+        } else if (code.size() > index + 1 && codeMap.count(code[index + 1])) {
             commandCode.clear();
             commandCode.push_back(code[index]);
             index++;
             while (code[index] != ";") {
                 commandCode.push_back(code[index]);
                 index++;
+                // skip empty string
+                if (code[index] == "" && index < code.size() - 1) {
+                    ++index;
+                }
             }
             expressions->addExpression(new CommandExpression(factory->createCommand(commandCode)));
             index++;

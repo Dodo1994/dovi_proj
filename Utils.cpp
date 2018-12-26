@@ -85,6 +85,8 @@ list<string> Utils::infixToPrefix(list<string> infix) {
             } else {
                 lastOp = "";
             }
+        } else {
+            throw "be careful!!";
         }
     }
     // put all the rest to the queue
@@ -156,6 +158,8 @@ double Utils::prefixToDouble(list<string> prefix) {
                 stack.push(new OR(o2, o1));
             } else if (it == "AND") {
                 stack.push(new AND(o2, o1));
+            } else {
+                throw "be careful!!";
             }
         }
     }

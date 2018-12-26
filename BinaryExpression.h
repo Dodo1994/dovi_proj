@@ -15,7 +15,7 @@ public:
 
     virtual double calculate() = 0;
 
-    ~BinaryExpression();
+    ~BinaryExpression() override;
 };
 
 

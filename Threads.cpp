@@ -7,7 +7,7 @@ void Threads::addThread(thread *t) {
 
 Threads::~Threads() {
     for (auto &it : this->threads) {
-        it->detach();
+        it->join();
         delete it;
     }
 }

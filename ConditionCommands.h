@@ -39,6 +39,8 @@ public:
                          map<string, VarData *> *symTbl, map<string, string> &cmdMap);
 
     void doCommand() override;
+
+    ~LoopCommand();
 };
 
 #endif

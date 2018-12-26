@@ -33,7 +33,6 @@ Interpreter::Interpreter() {
 }
 
 Interpreter::~Interpreter() {
-
     delete this->factory;
     delete this->expressions;
     delete this->threads;

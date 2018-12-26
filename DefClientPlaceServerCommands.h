@@ -21,7 +21,6 @@
 #include "Threads.h"
 #include "VarData.h"
 
-
 class ConnectCommand: public Command {
     //ipv6 max 39 chars
     char ip[39];
@@ -32,7 +31,9 @@ class ConnectCommand: public Command {
 public:
     ConnectCommand(vector <string> &code, map<string, VarData *> *symTbl, Threads* threads);
 
-    void doCommand();
+    void doCommand() override;
+
+    ~ConnectCommand() override;
 };
 
 class DefineVarCommand : public Command {
@@ -53,6 +54,8 @@ public:
     OpenServerCommand(vector<string> &code, map<string, VarData *> *symTbl, Threads *threads);
 
     void doCommand() override;
+
+    ~OpenServerCommand() override;
 };
 
 class PlacementCommand : public Command {

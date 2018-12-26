@@ -81,3 +81,7 @@ LoopCommand::LoopCommand(vector<string> &code, CommandFactory *factory, map<stri
     this->cmdMap = cmdMap;
     this->expressions = new ExpsCollection;
 }
+
+LoopCommand::~LoopCommand() {
+    delete this->expressions;
+}

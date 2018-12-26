@@ -4,6 +4,7 @@
 
 
 void EntrcCommand::doCommand() {
+    cout << "enter c.." << endl;
     // wait until get char
     getchar();
 }

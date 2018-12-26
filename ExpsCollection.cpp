@@ -22,12 +22,7 @@ ExpsCollection::ExpsCollection() {
 
 void ExpsCollection::deleteAll() {
     for (auto &it : this->expressions) {
-        // case CommandExpression call its DTOR
-        if (CommandExpression *cmd = dynamic_cast<CommandExpression *>( it )) {
-            delete cmd;
-        } else {
-            delete it;
-        }
+        delete it;
     }
     this->expressions.clear();
 }
