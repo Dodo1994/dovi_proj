@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.13)
-project(ori_lexer)
+project(proj2222)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(ori_lexer main.cpp Interpreter.cpp Interpreter.h Command.h ConditionCommand.h Expression.h BinaryExpression.cpp BinaryExpression.h CommandExpression.cpp CommandExpression.h VarData.cpp VarData.h CommandFactory.cpp CommandFactory.h Utils.cpp Utils.h ExpsCollection.cpp ExpsCollection.h ReadCode.cpp ReadCode.h Threads.cpp Threads.h MathExpressions.cpp MathExpressions.h ConditionCommands.cpp ConditionCommands.h EntrcPrintSleepCommands.cpp EntrcPrintSleepCommands.h DefClientPlaceServerCommands.cpp DefClientPlaceServerCommands.h LexerParser.cpp LexerParser.h)
-SET(CMAKE_CXX_FLAGS -pthread)
+set(CMAKE_CXX_FLAGS -pthread)
+
+add_executable(proj2222 main.cpp AStar.cpp BestFirstSearch.cpp BFS.cpp CacheManager.cpp ClientHandler.cpp DFS.cpp FileCacheManager.cpp MyParallelServer.cpp MySerialServer.cpp MyTestClientHandler.cpp Server.cpp Solver.cpp State.cpp StringReverser.cpp Searchable.cpp Searcher.cpp TestSearcher.cpp SearchSolver.cpp SolverImp.cpp MatrixCreator.cpp Matrix.cpp Utils.cpp)
